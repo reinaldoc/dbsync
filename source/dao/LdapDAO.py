@@ -18,7 +18,7 @@
 
 import ldap
 
-class LDAP(object):
+class LdapDAO(object):
   def __init__(self):
     self.l = None
 

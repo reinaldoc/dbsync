@@ -17,7 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
 
-from LDAP import LDAP
+from dao.LdapDAO import LdapDAO
+from dao.OracleDAO import OracleDAO
 
 l = LDAP()
 l.connect("ldap://10.13.0.10:3268")
