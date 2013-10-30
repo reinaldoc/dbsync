@@ -54,4 +54,16 @@ class LdapDAO(object):
             if e[0]["desc"] == "Size limit exceeded":
                 return ldap_result
 
-    
+  def test(self):
+    result = self.search("(mail=rei@tre-pa.gov.br)", "DC=REDETRE,DC=JUS,DC=BR")
+    for dn in result.keys():
+        print "DN:     " + dn
+        print "NOME:   " + result.get(dn).get("cn")[0]
+        print "CARGO:  " + result.get(dn).get("description")[0]
+        print "E-MAIL: " + result.get(dn).get("mail")[0]
+        print
+        print "## LDAP ATTRIBUTES ###"
+        print result.get(dn).keys()
+        print
+        print "### DATA ###"
+        print result.get(dn)
