@@ -18,18 +18,22 @@
 
 import ldap
 
-class LdapDAO(object):
-  def __init__(self):
-    self.l = None
+from ConfigDAO import ConfigDAO
 
-  def connect(self, uri):
+class LdapDAO(object):
+  def __init__(self, db_section, sync_section):
+    c = ConfigDAO()
+    self.__connect(c.config.get(db_section, "uri"))
+    self.__bind(c.config.get(db_section, "username"), c.config.get(db_section, "password"))
+
+  def __connect(self, uri):
     ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, 2)
     ldap.set_option(ldap.OPT_REFERRALS, 0)
     self.l = ldap.initialize(uri)
     self.l.protocol_version = ldap.VERSION3
     return self.l
 
-  def bind(self, dn, password):
+  def __bind(self, dn, password):
     self.l.simple_bind(dn, password)
 
   def search(self,ldap_filter="(objectClass=*)",baseDN=None,attrs=None,scope=ldap.SCOPE_SUBTREE):

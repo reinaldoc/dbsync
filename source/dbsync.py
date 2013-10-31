@@ -17,11 +17,34 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
 
+
+import json
+
+from controller.ConnectionBC import ConnectionBC
+
+from dao.ConfigDAO import ConfigDAO
 from dao.LdapDAO import LdapDAO
 from dao.OracleDAO import OracleDAO
 
-l = LdapDAO()
-l.connect("ldap://10.13.0.10:3268")
-l.bind("rei@redetre.jus.br","12345678")
-l.test()
+
+c = ConfigDAO()
+
+for syncSection in c.getSyncSections():
+  origin = c.config.get(syncSection, "from")
+  print "## FROM "
+  print c.config.items(origin)
+  print
+  conn1 = ConnectionBC.getConnection(origin, syncSection)
+  conn1.test()
+    
+  to = c.config.get(syncSection, "to")
+  print "## TO"
+  print c.config.items(to)
+  print
+  conn2 = ConnectionBC.getConnection(to, syncSection)
+  conn2.test()
+
+  print "## RULES"
+  rule = json.loads(c.config.get(syncSection, "to rules"))
+  print rule.get("telephoneNumber")
 

@@ -1,26 +1,26 @@
+
 import sys
 import cx_Oracle
-
+from ConfigDAO import ConfigDAO
 
 class OracleDAO(object):
-  def __init__(self):
-    self.usuario = "admsrd"
-    self.senha = "admsrd"
-    self.bd = "10.13.1.1:1521/adm"
-    self.conexao = cx_Oracle.connect(usuario+"/"+senha+"@"+bd)
-    self.cursor = conexao.cursor()
+  def __init__(self, db_section, sync_section):
+    self.sync_section = sync_section
+    self.c = ConfigDAO()
+    self.conn = cx_Oracle.connect("%s/%s@%s" % (self.c.config.get(db_section, "username") , self.c.config.get(db_section, "password") , self.c.config.get(db_section, "uri")))
+    self.cursor = self.conn.cursor()
 
-  def list(self):
-    self.cursor.execute("SELECT NOM, TELEFONE from vw_mat_servidores")
-    self.resultado = cursor.fetchone()
+  def test(self):
+    self.cursor.execute(self.c.config.get(self.sync_section, "from query"))
+    result = self.cursor.fetchone()
 
-    if resultado == None:
+    if result == None:
       print("Nenhum Resultado")
     else:
-      while resultado:
-        print(resultado[0])
-        resultado = cursor.fetchone()
+      while result:
+        print(result[0])
+        result = self.cursor.fetchone()
 
   def __del__(self):
     self.cursor.close()
-    self.conexao.close()
+    self.conn.close()
