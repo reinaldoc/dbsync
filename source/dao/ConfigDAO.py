@@ -3,13 +3,27 @@ import ConfigParser
 
 class ConfigDAO(object):
 
-  def __init__(self):
-    self.config = ConfigParser.ConfigParser()
-    self.config.read("dbsync.conf")
+	_construct = False
+	_instance = None
 
-  def getSyncSections(self):
-    result = []
-    for section in self.config.sections():
-      if self.config.get(section, "type") == "sync":
-        result.append(section)
-    return result
+	def __new__(cls, *args, **kwargs):
+		if not cls._instance:
+			cls._instance = super(ConfigDAO, cls).__new__(cls)
+		return cls._instance
+
+	def __init__(self):
+		# Check if run constructor
+		if ConfigDAO._construct:
+			return
+		ConfigDAO._construct = True
+
+		# Initialize
+		self.config = ConfigParser.ConfigParser()
+		self.config.read("dbsync.conf")
+
+	def getSyncSections(self):
+		result = []
+		for section in self.config.sections():
+			if self.config.get(section, "type") == "sync":
+				result.append(section)
+		return result
