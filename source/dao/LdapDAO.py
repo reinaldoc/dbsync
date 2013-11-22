@@ -46,6 +46,8 @@ class LdapDAO(object):
     
   def getSingleResult(self, ldap_filter):
     result = self.search(ldap_filter, self.c.config.get(self.db_section, "basedn"))
+    if result is None:
+        return {}
     if len(result) > 1:
         raise Exception("Destination database returned more than one entry for this query: %s" % ldap_filter)
     return result
