@@ -22,9 +22,10 @@ from ConfigDAO import ConfigDAO
 
 class LdapDAO(object):
   def __init__(self, db_section, sync_section):
-    c = ConfigDAO()
-    self.__connect(c.config.get(db_section, "uri"))
-    self.__bind(c.config.get(db_section, "username"), c.config.get(db_section, "password"))
+    self.c = ConfigDAO()
+    self.db_section = db_section
+    self.__connect(self.c.config.get(db_section, "uri"))
+    self.__bind(self.c.config.get(db_section, "username"), self.c.config.get(db_section, "password"))
 
   def __connect(self, uri):
     ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, 2)
@@ -35,6 +36,19 @@ class LdapDAO(object):
 
   def __bind(self, dn, password):
     self.l.simple_bind(dn, password)
+
+  def getId(self, ldap_filter):
+    result = self.getSingleResult(ldap_filter)
+    if len(result) == 0:
+      print "WARN: no entry found on destination database for this query: %s" % ldap_filter
+      return None
+    return result.keys()[0]
+    
+  def getSingleResult(self, ldap_filter):
+    result = self.search(ldap_filter, self.c.config.get(self.db_section, "basedn"))
+    if len(result) > 1:
+        raise Exception("Destination database returned more than one entry for this query: %s" % ldap_filter)
+    return result
 
   def search(self,ldap_filter="(objectClass=*)",baseDN=None,attrs=None,scope=ldap.SCOPE_SUBTREE):
         
@@ -48,15 +62,22 @@ class LdapDAO(object):
                 elif result_type == ldap.RES_SEARCH_ENTRY:
                     ldap_result[result_data[0][0]] = result_data[0][1]
                 elif result_type == ldap.RES_SEARCH_REFERENCE:
-                    dn = result_data[0][1][0].split('/', 3)[3].split("?")[0]
-                    attr, value = dn.split(',')[0].split('=')
-                    ldap_result[dn] = {'ref': [result_data[0][1][0]], 'objectClass': ['referral', 'extensibleObject'], attr: [value]}
+                    continue
+                    #dn = result_data[0][1][0].split('/', 3)[3].split("?")[0]
+                    #attr, value = dn.split(',')[0].split('=')
+                    #ldap_result[dn] = {'ref': [result_data[0][1][0]], 'objectClass': ['referral', 'extensibleObject'], attr: [value]}
                 else:
                     print "ERROR: result type not implemented. %s" % result_type
             return ldap_result
         except ldap.LDAPError, e:
             if e[0]["desc"] == "Size limit exceeded":
                 return ldap_result
+
+  def update(self, id, updateRules):
+      print "# ID: %s" % id
+      print "# Rules"
+      print updateRules
+      print
 
   def test(self):
     result = self.search("(mail=rei@tre-pa.gov.br)", "DC=REDETRE,DC=JUS,DC=BR")
