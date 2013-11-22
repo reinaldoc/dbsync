@@ -21,6 +21,7 @@
 import json
 
 from controller.ConnectionBC import ConnectionBC
+from util.Strings import Strings
 
 from dao.ConfigDAO import ConfigDAO
 from dao.LdapDAO import LdapDAO
@@ -47,10 +48,7 @@ for syncSection in c.getSyncSections():
   rules = json.loads(c.config.get(syncSection, "to rules"))
   
   for row in conn1.execute():
-    match = c.config.get(syncSection, "to match")
-    for count in range(0,len(row)):
-      if row[count] is not None:
-        match = match.replace("%%%s" % count, row[count])
+    match = Strings.replaceList(c.config.get(syncSection, "to match"),  row)
     if match.find("%") != -1:
       print "WARN: can not build a query to find a id for: " + str(row)
       continue
@@ -58,7 +56,8 @@ for syncSection in c.getSyncSections():
     idForUpdate = conn2.getId(match)
     rulesForUpdate = rules
 
-    # code to update 'rulesForUpdate'
+    for key, value in rulesForUpdate.items():
+        rulesForUpdate[key] = Strings.replaceList(rulesForUpdate.get(key), row)
         
-  conn2.update(idForUpdate, rulesForUpdate)
+    conn2.update(idForUpdate, rulesForUpdate)
 
