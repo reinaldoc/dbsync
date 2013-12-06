@@ -9,7 +9,11 @@ class OracleDAO(object):
   def __init__(self, db_section, sync_section):
     self.sync_section = sync_section
     self.c = ConfigDAO()
-    self.conn = cx_Oracle.connect("%s/%s@%s" % (self.c.config.get(db_section, "username") , self.c.config.get(db_section, "password") , self.c.config.get(db_section, "uri")))
+    try:
+	self.conn = cx_Oracle.connect("%s/%s@%s" % (self.c.config.get(db_section, "username") , self.c.config.get(db_section, "password") , self.c.config.get(db_section, "uri")))
+    except cx_Oracle.DatabaseError, e:
+	print("Erro: " + str(e))
+	sys.exit()
     self.cursor = self.conn.cursor()
 
   def execute(self):
@@ -28,5 +32,9 @@ class OracleDAO(object):
         result = self.cursor.fetchone()
 
   def __del__(self):
-    self.cursor.close()
-    self.conn.close()
+    try:
+  	self.cursor.close()
+	self.conn.close()
+    except Exception, e:
+	pass
+
