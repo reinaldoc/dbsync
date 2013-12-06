@@ -49,26 +49,15 @@ for syncSection in c.getSyncSections():
   
   for row in conn1.execute():
 
-    row2 = []
-    for i in row:
-      if i is None:
-        row2.append(i)
-      else:
-        print i.decode('cp1252').encode('utf-8')
-        row2.append(i.decode('iso-8859-1').encode('utf-8'))
-    row = row2
-
-    print row
-
     # make a query from a "to match" template
-    query = Strings.replaceList(c.config.get(syncSection, "to match"), row)
+    query = Strings.replaceList(c.config.get(syncSection, "to match"), row, c.config.get(origin, "encoding"))
     if query.find("%") != -1:
       print "WARN: can not build a query to find a id for: " + str(row)
       continue
     
     rulesForUpdate = rules.copy()
     for key, value in rulesForUpdate.items():
-        rulesForUpdate[key] = Strings.replaceList(rulesForUpdate.get(key), row)
+        rulesForUpdate[key] = Strings.replaceList(rulesForUpdate.get(key), row, c.config.get(origin, "encoding"))
         
     conn2.update(query, rulesForUpdate)
 
