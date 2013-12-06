@@ -1,5 +1,7 @@
 
-import sys
+import sys, os
+os.environ["NLS_LANG"] = "AMERICAN_AMERICA.WE8MSWIN1252"
+
 import cx_Oracle
 from ConfigDAO import ConfigDAO
 
