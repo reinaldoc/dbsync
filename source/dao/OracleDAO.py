@@ -17,8 +17,13 @@ class OracleDAO(object):
     self.cursor = self.conn.cursor()
 
   def execute(self):
-    self.cursor.execute(self.c.config.get(self.sync_section, "from query"))
-    return self.cursor.fetchall()
+    try:
+	self.cursor.execute(self.c.config.get(self.sync_section, "from query"))
+	return self.cursor.fetchall()
+    except cx_Oracle.DatabaseError, e:
+	print("Erro: " + str(e))
+	print("Malformed query '%s' on configuration file on attribute 'from query' in setcion %s" % (self.c.config.get(self.sync_section, "from query"), self.sync_section))
+	sys.exit()
 
   def test(self):
     self.cursor.execute(self.c.config.get(self.sync_section, "from query"))
