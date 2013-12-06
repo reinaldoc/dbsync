@@ -49,20 +49,26 @@ for syncSection in c.getSyncSections():
   
   for row in conn1.execute():
 
-    match = Strings.replaceList(c.config.get(syncSection, "to match"),  row)
-    if match.find("%") != -1:
+    row2 = []
+    for i in row:
+      if i is None:
+        row2.append(i)
+      else:
+        print i.decode('cp1252').encode('utf-8')
+        row2.append(i.decode('iso-8859-1').encode('utf-8'))
+    row = row2
+
+    print row
+
+    # make a query from a "to match" template
+    query = Strings.replaceList(c.config.get(syncSection, "to match"), row)
+    if query.find("%") != -1:
       print "WARN: can not build a query to find a id for: " + str(row)
       continue
-
-    idForUpdate = conn2.getId(match)
-    # don't continue if don't find id on destination database
-    if not idForUpdate:
-      continue
     
-    rulesForUpdate = rules
-
+    rulesForUpdate = rules.copy()
     for key, value in rulesForUpdate.items():
         rulesForUpdate[key] = Strings.replaceList(rulesForUpdate.get(key), row)
         
-    conn2.update(idForUpdate, rulesForUpdate)
+    conn2.update(query, rulesForUpdate)
 

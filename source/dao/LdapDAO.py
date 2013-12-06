@@ -44,8 +44,8 @@ class LdapDAO(object):
       return None
     return result.keys()[0]
     
-  def getSingleResult(self, ldap_filter):
-    result = self.search(ldap_filter, self.c.config.get(self.db_section, "basedn"))
+  def getSingleResult(self, ldap_filter, attrs=None):
+    result = self.search(ldap_filter, self.c.config.get(self.db_section, "basedn"), attrs)
     if result is None:
         return {}
     if len(result) > 1:
@@ -75,17 +75,32 @@ class LdapDAO(object):
             if e[0]["desc"] == "Size limit exceeded":
                 return ldap_result
 
-  def update(self, id, updateRules):
-      print "# ID: %s" % id
+  def update(self, query, rules):
+
+      x = []
+      for i in rules.keys():
+        x.append(i.encode('utf-8'))
+
+      entry = self.getSingleResult(query, x)
+      # return if don't find a entry on destination database
+      if not entry:
+        return
+
+      print "# ID: %s" % entry.keys()[0]
       print "# Rules"
-      print updateRules
+      print rules
       
-      for k,v in updateRules.items():
+      updateRules = {}
+      
+      for k,v in rules.items():
           updateRules[k.encode('utf-8')] = [v.encode('utf-8')]
           
       print updateRules    
-          
-      print self.l.modify(id, modlist.modifyModlist({}, updateRules))
+
+      print "OLD: " + str(entry.values()[0])
+      print "NEW: " + str(updateRules)
+      print modlist.modifyModlist(entry.values()[0], updateRules)   
+      print self.l.modify(entry.keys()[0], modlist.modifyModlist(entry.values()[0], updateRules))
 
   def test(self):
     result = self.search("(mail=rei@tre-pa.gov.br)", "DC=REDETRE,DC=JUS,DC=BR")
