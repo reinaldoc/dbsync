@@ -16,7 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
 
-import ldap
+import ldap, ldap.modlist as modlist
 
 from ConfigDAO import ConfigDAO
 
@@ -79,7 +79,13 @@ class LdapDAO(object):
       print "# ID: %s" % id
       print "# Rules"
       print updateRules
-      print
+      
+      for k,v in updateRules.items():
+          updateRules[k.encode('utf-8')] = [v.encode('utf-8')]
+          
+      print updateRules    
+          
+      print self.l.modify(id, modlist.modifyModlist({}, updateRules))
 
   def test(self):
     result = self.search("(mail=rei@tre-pa.gov.br)", "DC=REDETRE,DC=JUS,DC=BR")
