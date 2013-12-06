@@ -22,7 +22,7 @@ class OracleDAO(object):
       print("Nenhum Resultado")
     else:
       while result:
-        print(result[0])
+        print result
         result = self.cursor.fetchone()
 
   def __del__(self):
