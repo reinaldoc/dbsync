@@ -48,12 +48,17 @@ for syncSection in c.getSyncSections():
   rules = json.loads(c.config.get(syncSection, "to rules"))
   
   for row in conn1.execute():
+
     match = Strings.replaceList(c.config.get(syncSection, "to match"),  row)
     if match.find("%") != -1:
       print "WARN: can not build a query to find a id for: " + str(row)
       continue
 
     idForUpdate = conn2.getId(match)
+    # don't continue if don't find id on destination database
+    if not idForUpdate:
+      continue
+    
     rulesForUpdate = rules
 
     for key, value in rulesForUpdate.items():
