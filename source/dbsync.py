@@ -21,6 +21,8 @@
 import json
 
 from util.Strings import Strings
+from util.Message import Info
+from util.Message import Debug
 
 from dao.ConnectionDAO import ConnectionDAO
 from dao.ConfigDAO import ConfigDAO
@@ -31,33 +33,39 @@ from dao.OracleDAO import OracleDAO
 c = ConfigDAO()
 
 for syncSection in c.getSyncSections():
+  Info("Synchronizing '%s'..." % syncSection)
+
   origin = c.config.get(syncSection, "from")
-  #print "## FROM "
-  #print c.config.items(origin)
-  #print
+  Debug("\nConnecting to '%s'" % origin)
+  Debug(c.config.items(origin))
   conn1 = ConnectionDAO.getConnection(origin, syncSection)
-  #conn1.test()
-    
+  conn1.test()
+
   to = c.config.get(syncSection, "to")
-  #print "## TO"
-  #print c.config.items(to)
-  #print
+  Debug("\nConnecting to '%s'" % to)
+  Debug(c.config.items(to))
   conn2 = ConnectionDAO.getConnection(to, syncSection)
-  #conn2.test()
+  conn2.test()
 
   rules = json.loads(c.config.get(syncSection, "to rules"))
   
   for row in conn1.execute():
-
     # make a query from a "to match" template
     query = Strings.replaceList(c.config.get(syncSection, "to match"), row, c.config.get(origin, "encoding"))
     if query.find("%") != -1:
       print "WARN: can not build a query to find a id for: " + str(row)
       continue
     
+    Info("")
+    Info("Identity query: %s" % query)
+
     rulesForUpdate = rules.copy()
     for key, value in rulesForUpdate.items():
         rulesForUpdate[key] = Strings.replaceList(rulesForUpdate.get(key), row, c.config.get(origin, "encoding"))
-        
+        if rulesForUpdate[key].find("%") != -1:
+          del rulesForUpdate[key]
+
+    Info("Rules for update: %s" % rulesForUpdate)
+
     conn2.update(query, rulesForUpdate)
 

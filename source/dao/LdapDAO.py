@@ -19,6 +19,8 @@
 import ldap, ldap.modlist as modlist
 
 from ConfigDAO import ConfigDAO
+from util.Message import Debug
+from util.Message import Info
 
 class LdapDAO(object):
   def __init__(self, db_section, sync_section):
@@ -86,23 +88,22 @@ class LdapDAO(object):
       if not entry:
         return
 
-      print "# ID: %s" % entry.keys()[0]
-      print "# Rules"
-      print rules
+      Info("Id for update: %s" % entry.keys()[0])
       
       updateRules = {}
-      
       for k,v in rules.items():
           updateRules[k.encode('utf-8')] = [v.encode('utf-8')]
           
-      print updateRules    
-
-      print "OLD: " + str(entry.values()[0])
-      print "NEW: " + str(updateRules)
-      print modlist.modifyModlist(entry.values()[0], updateRules)   
-      print self.l.modify(entry.keys()[0], modlist.modifyModlist(entry.values()[0], updateRules))
+      Debug("Current attributes: %s" % entry.values()[0])
+      Debug("Updated attributes: %s" % updateRules)
+      Debug("Ldap style struct: %s" % modlist.modifyModlist(entry.values()[0], updateRules))
+      Debug("Update result code: %s" % self.l.modify(entry.keys()[0], modlist.modifyModlist(entry.values()[0], updateRules)))
 
   def test(self):
+    if not self.c.config.get("General", "stage") == "Test":
+      return
+
+    print "\nRunning test to '%s'" % self.db_section
     result = self.search("(mail=rei@tre-pa.gov.br)", "DC=REDETRE,DC=JUS,DC=BR")
     for dn in result.keys():
         print "DN:     " + dn

@@ -7,6 +7,7 @@ from ConfigDAO import ConfigDAO
 
 class OracleDAO(object):
   def __init__(self, db_section, sync_section):
+    self.db_section = db_section
     self.sync_section = sync_section
     self.c = ConfigDAO()
     try:
@@ -27,6 +28,10 @@ class OracleDAO(object):
 	sys.exit()
 
   def test(self):
+    if not self.c.config.get("General", "stage") == "Test":
+      return
+
+    print "\nRunning test to '%s'" % self.db_section
     self.cursor.execute(self.c.config.get(self.sync_section, "from query"))
     result = self.cursor.fetchone()
 
