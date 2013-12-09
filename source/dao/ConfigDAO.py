@@ -24,6 +24,9 @@ class ConfigDAO(object):
 	def getSyncSections(self):
 		result = []
 		for section in self.config.sections():
-			if self.config.get(section, "type") == "sync":
-				result.append(section)
+			try:
+				if self.config.get(section, "type") == "sync":
+					result.append(section)
+			except Exception, e:
+				pass
 		return result
