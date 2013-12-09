@@ -20,9 +20,9 @@
 
 import json
 
-from controller.ConnectionBC import ConnectionBC
 from util.Strings import Strings
 
+from dao.ConnectionDAO import ConnectionDAO
 from dao.ConfigDAO import ConfigDAO
 from dao.LdapDAO import LdapDAO
 from dao.OracleDAO import OracleDAO
@@ -35,14 +35,14 @@ for syncSection in c.getSyncSections():
   #print "## FROM "
   #print c.config.items(origin)
   #print
-  conn1 = ConnectionBC.getConnection(origin, syncSection)
+  conn1 = ConnectionDAO.getConnection(origin, syncSection)
   #conn1.test()
     
   to = c.config.get(syncSection, "to")
   #print "## TO"
   #print c.config.items(to)
   #print
-  conn2 = ConnectionBC.getConnection(to, syncSection)
+  conn2 = ConnectionDAO.getConnection(to, syncSection)
   #conn2.test()
 
   rules = json.loads(c.config.get(syncSection, "to rules"))

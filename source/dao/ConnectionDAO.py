@@ -1,7 +1,7 @@
 
 from dao.ConfigDAO import ConfigDAO
 
-class ConnectionBC(object):
+class ConnectionDAO(object):
   def __init__(self):
     pass
 

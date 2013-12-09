@@ -12,7 +12,8 @@ class OracleDAO(object):
     try:
 	self.conn = cx_Oracle.connect("%s/%s@%s" % (self.c.config.get(db_section, "username") , self.c.config.get(db_section, "password") , self.c.config.get(db_section, "uri")))
     except cx_Oracle.DatabaseError, e:
-	print("Erro: " + str(e))
+	print(e[0].message.strip())
+	print("Unable to connect to '%s'. Aborting..." % db_section)
 	sys.exit()
     self.cursor = self.conn.cursor()
 
@@ -21,8 +22,8 @@ class OracleDAO(object):
 	self.cursor.execute(self.c.config.get(self.sync_section, "from query"))
 	return self.cursor.fetchall()
     except cx_Oracle.DatabaseError, e:
-	print("Erro: " + str(e))
-	print("Malformed query '%s' on configuration file on attribute 'from query' in setcion %s" % (self.c.config.get(self.sync_section, "from query"), self.sync_section))
+	print(e[0].message.strip())
+	print("Malformed query '%s' in setcion '%s'" % (self.c.config.get(self.sync_section, "from query"), self.sync_section))
 	sys.exit()
 
   def test(self):
