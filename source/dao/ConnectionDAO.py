@@ -1,16 +1,13 @@
 
 from dao.ConfigDAO import ConfigDAO
+from util.Clazz import Clazz
 
 class ConnectionDAO(object):
   def __init__(self):
     pass
 
   @staticmethod
-  def getConnection(db_section, sync_section):
-    c = ConfigDAO()
-    type = c.config.get(db_section, "type")
-    module = __import__("dao.%sDAO" % type)	# import
-    module = getattr(module, "%sDAO" % type)	# get file name
-    module = getattr(module, "%sDAO" % type)    # get class name
-    return module(db_section, sync_section)
-    
+  def get_connection(db_section, sync_section):
+    type = ConfigDAO().config.get(db_section, "type")
+    conn = Clazz.get_instance("dao", "%sDAO" % type, "%sDAO" % type)
+    return conn(db_section, sync_section)
