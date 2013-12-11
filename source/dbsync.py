@@ -18,54 +18,18 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
 
 
-import json
-
-from util.Strings import Strings
 from util.Message import Info
 from util.Message import Debug
 
-from dao.ConnectionDAO import ConnectionDAO
-from dao.ConfigDAO import ConfigDAO
-from dao.LdapDAO import LdapDAO
-from dao.OracleDAO import OracleDAO
+from controller.SyncBC import SyncBC
+from controller.ConnectionBC import ConnectionBC
 
+for sync_section in SyncBC().get_sync_sections():
 
-c = ConfigDAO()
+	Info("Synchronizing '%s'..." % sync_section)
 
-for syncSection in c.getSyncSections():
-  Info("Synchronizing '%s'..." % syncSection)
+	s_handle = ConnectionBC.get_source_handle(sync_section)
+	d_handle = ConnectionBC.get_dest_handle(sync_section)
 
-  origin = c.config.get(syncSection, "from")
-  Debug("\nConnecting to '%s'" % origin)
-  Debug(c.config.items(origin))
-  conn1 = ConnectionDAO.getConnection(origin, syncSection)
-  conn1.test()
-
-  to = c.config.get(syncSection, "to")
-  Debug("\nConnecting to '%s'" % to)
-  Debug(c.config.items(to))
-  conn2 = ConnectionDAO.getConnection(to, syncSection)
-  conn2.test()
-
-  rules = json.loads(c.config.get(syncSection, "to rules"))
-  
-  for row in conn1.execute():
-    # make a query from a "to match" template
-    query = Strings.replaceList(c.config.get(syncSection, "to match"), row, c.config.get(origin, "encoding"))
-    if query.find("%") != -1:
-      print "WARN: can not build a query to find a id for: " + str(row)
-      continue
-    
-    Info("")
-    Info("Identity query: %s" % query)
-
-    rulesForUpdate = rules.copy()
-    for key, value in rulesForUpdate.items():
-        rulesForUpdate[key] = Strings.replaceList(rulesForUpdate.get(key), row, c.config.get(origin, "encoding"))
-        if rulesForUpdate[key].find("%") != -1:
-          del rulesForUpdate[key]
-
-    Info("Rules for update: %s" % rulesForUpdate)
-
-    conn2.update(query, rulesForUpdate)
-
+	for row in s_handle.load():
+		d_handle.sync(sync_section, row)
