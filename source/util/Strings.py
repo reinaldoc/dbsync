@@ -6,7 +6,10 @@ class Strings(object):
 	"""Receives a string template like 'My name is %0 and I am %1 years old' and
 	   a list with values to be replaced, like ['Tiago Neves', '29']. This
 	   example produces the string 'My name is Tiago Neves and I am 29 years old'"""
-        for count in range(0,len(list)):
-            if list[count] is not None:
-                string = string.replace("%%%s" % count, list[count].decode(encoding))
+        for count in range(len(list)-1, -1, -1):
+            value = list[count]
+            if value is not None:
+                if type(value) == type('string'):
+                  value = value.decode(encoding)
+                string = string.replace("%%%s" % count, value)
         return string
