@@ -18,17 +18,15 @@
 
 import ldap, ldap.modlist as modlist
 
-from ConfigDAO import ConfigDAO
 from util.Message import Debug
 from util.Message import Info
 
 class LdapDAO(object):
 
-	def __init__(self, db_section, sync_section):
-		self.c = ConfigDAO()
-		self.db_section = db_section
-		self.__connect(self.c.config.get(db_section, "uri"))
-		self.__bind(self.c.config.get(db_section, "username"), self.c.config.get(db_section, "password"))
+	def __init__(self, uri, username, password, basedn):
+		self.basedn = basedn
+		self.__connect(uri)
+		self.__bind(username, password)
 
 	def __connect(self, uri):
 		ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, 2)
@@ -48,8 +46,7 @@ class LdapDAO(object):
 		return result.keys()[0]
     
 	def getSingleResult(self, ldap_filter, attrs=None):
-		result = self.search(ldap_filter, self.c.config.get(self.db_section, "basedn"), attrs)
-		print result
+		result = self.search(ldap_filter, self.basedn, attrs)
 		if result is None:
 			return {}
 		if len(result) > 1:
@@ -79,29 +76,11 @@ class LdapDAO(object):
 			if e[0]["desc"] == "Size limit exceeded":
 				return ldap_result
 
-	def update(self, query, rules):
-
-		x = []
-		for i in rules.keys():
-			x.append(i.encode('utf-8'))
-
-
-		entry = self.getSingleResult(query, x)
-		# return if don't find a entry on destination database
-		if not entry:
+	def modify(self, dn, attributes):
+		if not dn or not attributes:
 			return
-
-		Info("Id for update: %s" % entry.keys()[0])
-
-		print rules      
-		updateRules = rules
-#		for k,v in rules.items():
-#			updateRules[k.encode('utf-8')] = [v.encode('utf-8')]
-
-		Debug("Current attributes: %s" % entry.values()[0])
-		Debug("Updated attributes: %s" % updateRules)
-		Debug("Ldap style struct: %s" % modlist.modifyModlist(entry.values()[0], updateRules))
-		Debug("Update result code: %s" % self.l.modify(entry.keys()[0], modlist.modifyModlist(entry.values()[0], updateRules)))
+		Debug("Ldap style struct: %s" % modlist.modifyModlist(dict((i,"not empty string") for i in attributes.keys()), attributes))
+		Debug("Update result code: %s" % self.l.modify(dn, modlist.modifyModlist(dict((i,"not empty string") for i in attributes.keys()), attributes)))
 
 	def test(self):
 		if not self.c.config.get("General", "stage") == "Test":
