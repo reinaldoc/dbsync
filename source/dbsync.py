@@ -22,14 +22,12 @@ from util.Message import Info
 from util.Message import Debug
 
 from controller.SyncBC import SyncBC
-from controller.ConnectionBC import ConnectionBC
 
-for sync_section in SyncBC().get_sync_sections():
+for sync_section in SyncBC.get_sync_sections():
 
 	Info("Synchronizing '%s'..." % sync_section)
+	s_handle = SyncBC.get_source_handle(sync_section)
+	d_handle = SyncBC.get_dest_handle(sync_section)
 
-	s_handle = ConnectionBC.get_source_handle(sync_section)
-	d_handle = ConnectionBC.get_dest_handle(sync_section)
-
-	for row in s_handle.load():
-		d_handle.sync(sync_section, row)
+	for data in s_handle.load():
+		d_handle.sync(sync_section, data)
