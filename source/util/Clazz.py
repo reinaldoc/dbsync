@@ -2,8 +2,10 @@
 class Clazz:
 
 	@staticmethod
-	def get_instance(package, filename, classname):
-		module = __import__("%s.%s" % (package, filename))	# import
-		module = getattr(module, "%s" % classname)			# filename
-		module = getattr(module, "%s" % classname)			# classname
-		return module
+	def get_instance(clazz):
+	    parts = clazz.split('.')
+	    module = ".".join(parts[:-1])
+	    m = __import__(module)
+	    for comp in parts[1:]:
+	        m = getattr(m, comp)            
+	    return m
