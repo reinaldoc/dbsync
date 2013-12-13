@@ -76,11 +76,11 @@ class LdapDAO(object):
 			if e[0]["desc"] == "Size limit exceeded":
 				return ldap_result
 
-	def modify(self, dn, attributes):
-		if not dn or not attributes:
+	def modify(self, dn, oldattrs, newattrs):
+		if not dn or not newattrs:
 			return
-		Debug("Ldap style struct: %s" % modlist.modifyModlist(dict((i,"not empty string") for i in attributes.keys()), attributes))
-		Debug("Update result code: %s" % self.l.modify(dn, modlist.modifyModlist(dict((i,"not empty string") for i in attributes.keys()), attributes)))
+		Debug("Ldap style struct: %s" % modlist.modifyModlist(oldattrs, newattrs))
+		Debug("Update result code: %s" % self.l.modify(dn, modlist.modifyModlist(oldattrs, newattrs)))
 
 	def test(self):
 		if not self.c.config.get("General", "stage") == "Test":
