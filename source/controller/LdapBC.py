@@ -32,7 +32,7 @@ class LdapBC:
 		query = SyncBC.get_match_query(sync_section, data)
 		if query is None:
 			return
-		Info("Identity query: %s" % query)
+		Info("\nIdentity query: %s" % query)
 
 		# try get a entry for the match query
 		# retrieve only attributes to be changed (this is mandatory but current attributes will be removed)
@@ -52,7 +52,7 @@ class LdapBC:
 			if key.split(";")[0] in self.binary_attrs:
 				value = data[self.get_template_id(value, len(data))]
 				if value:
-					new_attributes[key] = value
+					new_attributes[key] = [value]
 				else:
 					del new_attributes[key]
 				continue
@@ -60,9 +60,11 @@ class LdapBC:
 			new_attributes[key] = Strings.replaceList(new_attributes.get(key), data, SyncBC.get_source_connection_encoding(sync_section))
 			if new_attributes[key].find("%") != -1:
 				del new_attributes[key]
+			else:
+				new_attributes[key] = [new_attributes[key]]
 
 		Info("DN for update: %s" % dn)
-		#Info("Rules for update: %s" % new_attributes)
+		Debug("Rules for update: %s" % new_attributes)
 		self.conn.modify(dn, old_attributes, new_attributes)
 
 	def get_template_id(self, template, max_id):
