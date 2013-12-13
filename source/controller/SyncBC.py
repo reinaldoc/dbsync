@@ -24,9 +24,16 @@ class SyncBC:
 		return SyncBC.get_connection_encoding(SyncBC.get_source_connection_section(sync_section))
 
 	@staticmethod
+	def get_connection_binary_attrs(db_section):
+		binary_attrs = ConfigDAO().get(db_section, "binary attrs")
+		if binary_attrs:
+			return ast.literal_eval(binary_attrs)
+		return []
+
+	@staticmethod
 	def __get_handle(db_section, sync_section):
 		type = ConfigDAO().config.get(db_section, "type")
-		conn = Clazz.get_instance("controller", "%sBC" % type, "%sBC" % type)
+		conn = Clazz.get_instance("controller.%s.%s" % ( "%sBC" % type, "%sBC" % type))
 		return conn(db_section, sync_section)
 
 	@staticmethod
@@ -67,3 +74,37 @@ class SyncBC:
 	@staticmethod
 	def get_sync_sections():
 		return ConfigDAO().get_sync_sections()
+
+	@staticmethod
+	def get_convert_data(sync_section):
+		try:
+			convert_data = ConfigDAO().get(sync_section, "convert data")
+			if convert_data:
+				return ast.literal_eval(convert_data)
+		except SyntaxError, e:
+			print("Error parsing convert data from '%s': %s" % (sync_section, e[1][3]))
+		return []
+
+	@staticmethod
+	def convert(sync_section, data):
+		# unpack variables
+		rule = SyncBC.get_convert_data(sync_section)
+		if not rule:
+			return data
+		
+		data_id = rule[0]
+		convert_class = rule[1]
+		class_args = rule[2:]
+
+		# process data convertation
+		convert_class_callable = SyncBC.__get_convert_instance(rule[1])
+		convert_class_instance = convert_class_callable(data[data_id], class_args)
+		converted_data = convert_class_instance.get_value()
+		if converted_data is not None:
+			data[data_id] = converted_data
+
+		return data
+
+	@staticmethod
+	def __get_convert_instance(clazz):
+		return Clazz.get_instance("controller.convert.%s.%s" % (clazz, clazz))
