@@ -19,8 +19,6 @@
 
 
 from util.Message import Info
-from util.Message import Debug
-
 from controller.SyncBC import SyncBC
 
 for sync_section in SyncBC.get_sync_sections():
@@ -30,4 +28,5 @@ for sync_section in SyncBC.get_sync_sections():
 	d_handle = SyncBC.get_dest_handle(sync_section)
 
 	for data in s_handle.load():
+		data = SyncBC.convert(sync_section, data)
 		d_handle.sync(sync_section, data)
