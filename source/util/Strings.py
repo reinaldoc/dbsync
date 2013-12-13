@@ -10,6 +10,6 @@ class Strings(object):
             value = list[count]
             if value is not None:
                 if type(value) == type('string'):
-                  value = value.decode(encoding)
+                  value = value.decode(encoding).encode('utf-8')
                 string = string.replace("%%%s" % count, value)
         return string
