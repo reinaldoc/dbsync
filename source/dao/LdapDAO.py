@@ -79,8 +79,10 @@ class LdapDAO(object):
 	def modify(self, dn, oldattrs, newattrs):
 		if not dn or not newattrs:
 			return
-		Debug("Ldap style struct: %s" % modlist.modifyModlist(oldattrs, newattrs))
-		Debug("Update result code: %s" % self.l.modify(dn, modlist.modifyModlist(oldattrs, newattrs)))
+		modstruct = modlist.modifyModlist(oldattrs, newattrs)
+		Info("Ldap style struct: %s" % modstruct)
+		if modstruct:
+			Debug("Update result: %s" % self.l.modify(dn, modlist.modifyModlist(oldattrs, newattrs)))
 
 	def test(self):
 		if not self.c.config.get("General", "stage") == "Test":
