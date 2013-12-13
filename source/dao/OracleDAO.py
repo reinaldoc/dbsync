@@ -24,13 +24,25 @@ class OracleDAO(object):
 			pass
 
 	def execute(self, query):
-		try:
+#		try:
 			self.cursor.execute(query)
-			return self.convert(self.cursor.fetchall())
-		except cx_Oracle.DatabaseError, e:
-			print(e[0].message.strip())
-			print("Malformed query '%s'" % query)
-			sys.exit()
+			result = []
+			while True:
+				row = self.cursor.fetchone()
+				if not row:
+					break
+				result.append(self.convert_row(row))
+				yield self.convert_row(row)
+#			return result				
+			
+#			return self.convert(self.cursor.fetchall())
+#		except cx_Oracle.DatabaseError, e:
+#			if isinstance(e[0], cx_Oracle._Error):
+#				print(e[0].message.strip())
+#				print("Malformed query '%s'" % query)
+#			else:
+#				print e[0]
+#			sys.exit()
 
 	def convert(self, ilist):
 
@@ -44,14 +56,27 @@ class OracleDAO(object):
 			for i in range(0,len(first_row)):
 				if isinstance(first_row[i], cx_Oracle.LOB):
 					blob_cols.append(i)
-					
+
 		# replace cx_Oracle.LOB object for bytes
 		if blob_cols:
 			for i in range(0, len(ilist)):
 				row = list(ilist[i])
 				for blob_col in blob_cols:
 					if row[blob_col]:
-						row[blob_col] = row[blob_col].read()
+						x = row[blob_col].read()
+						row[blob_col].close()
+						row[blob_col] = x
 				ilist[i] = row
 
 		return ilist
+
+	def convert_row(self, row):
+		row = list(row)
+		for i in range(0,len(row)):
+			if isinstance(row[i], cx_Oracle.LOB):
+				row[i] = row[i].read()
+		return row
+
+
+
+		
