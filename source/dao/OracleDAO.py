@@ -24,25 +24,17 @@ class OracleDAO(object):
 			pass
 
 	def execute(self, query):
-#		try:
+		try:
 			self.cursor.execute(query)
-			result = []
-			while True:
-				row = self.cursor.fetchone()
-				if not row:
-					break
-				result.append(self.convert_row(row))
+			for row in self.cursor:
 				yield self.convert_row(row)
-#			return result				
-			
-#			return self.convert(self.cursor.fetchall())
-#		except cx_Oracle.DatabaseError, e:
-#			if isinstance(e[0], cx_Oracle._Error):
-#				print(e[0].message.strip())
-#				print("Malformed query '%s'" % query)
-#			else:
-#				print e[0]
-#			sys.exit()
+		except cx_Oracle._Error, e:
+			print(e[0].message.strip())
+			print("Malformed query '%s'" % query)
+		except Exception, e:
+			print e[0]
+		finally:
+			sys.exit()
 
 	def convert(self, ilist):
 
@@ -76,7 +68,5 @@ class OracleDAO(object):
 			if isinstance(row[i], cx_Oracle.LOB):
 				row[i] = row[i].read()
 		return row
-
-
 
 		
