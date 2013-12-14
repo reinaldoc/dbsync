@@ -7,8 +7,8 @@ dbsync is a extensible to support any kind of data synchronization,
 including data convertation. All synchronization rules is defined
 on dbsync.conf 
 
-dbsync.conf - Synchronization definitions
-=========================================
+dbsync.conf - Sync definitions
+==============================
 
 All synchronization rules is defined on dbsync.conf
 
