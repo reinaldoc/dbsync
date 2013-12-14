@@ -57,7 +57,7 @@ class LdapBC:
 					del new_attributes[key]
 				continue
 			# process string attributes
-			new_attributes[key] = Strings.replaceList(new_attributes.get(key), data, SyncBC.get_source_connection_encoding(sync_section))
+			new_attributes[key] = Strings.replace_from_array(new_attributes.get(key), data, SyncBC.get_source_connection_encoding(sync_section))
 			if new_attributes[key].find("%") != -1:
 				del new_attributes[key]
 			else:

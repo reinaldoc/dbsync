@@ -65,7 +65,7 @@ class SyncBC:
 
 	@staticmethod
 	def	get_match_query(sync_section, data):
-		query = Strings.replaceList(SyncBC.get_match_template(sync_section), data, SyncBC.get_source_connection_encoding(sync_section))
+		query = Strings.replace_from_array(SyncBC.get_match_template(sync_section), data, SyncBC.get_source_connection_encoding(sync_section))
 		if query.find("%") != -1:
 			print "WARN: can not build a query to find a id for: %s" % data
 			return None
