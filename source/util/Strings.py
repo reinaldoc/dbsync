@@ -1,4 +1,7 @@
+"""
+Strings - a class to string related code
 
+"""
 class Strings(object):
 
 	@staticmethod

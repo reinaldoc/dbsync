@@ -1,3 +1,7 @@
+"""
+ResizeImageKeepingHeightRatio - a converter to resize images based on original ratio
+
+"""
 
 from dao.ImageDAO import ImageDAO
 

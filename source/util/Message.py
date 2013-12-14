@@ -1,3 +1,7 @@
+"""
+Message - message handling
+
+"""
 
 from dao.ConfigDAO import ConfigDAO
 

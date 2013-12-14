@@ -1,3 +1,7 @@
+"""
+OracleDAO - provide access to Oracla data
+
+"""
 
 import sys, os
 os.environ["NLS_LANG"] = "AMERICAN_AMERICA.WE8MSWIN1252"

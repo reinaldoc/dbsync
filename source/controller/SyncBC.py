@@ -1,3 +1,8 @@
+"""
+SyncBC - support code to synchronization
+
+Load dynamically business rules for backend base on 'type = Oracle' connection section
+"""
 
 import ast
 

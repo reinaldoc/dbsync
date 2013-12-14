@@ -1,3 +1,8 @@
+"""
+ConfigDAO - provide access to configuration file
+
+A singleton class to provide access and make validation to configuration file
+"""
 
 import ConfigParser
 

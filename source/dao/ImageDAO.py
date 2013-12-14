@@ -1,3 +1,7 @@
+"""
+ImageDAO - manipulate images
+
+"""
 
 import Image, ImageOps
 from cStringIO import StringIO

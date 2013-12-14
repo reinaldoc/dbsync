@@ -1,3 +1,9 @@
+"""
+LdapBC - business rules for Ldap backend
+
+A dynamic loaded class by SyncBC for 'type = Ldap' connection section.
+Must implement method load() when as source and sync() when as destination database
+"""
 
 from dao.ConfigDAO import ConfigDAO
 from dao.LdapDAO import LdapDAO

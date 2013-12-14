@@ -1,3 +1,7 @@
+"""
+Clazz - handling of dynamic class load 
+
+"""
 
 class Clazz:
 

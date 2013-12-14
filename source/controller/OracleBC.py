@@ -1,3 +1,9 @@
+"""
+OracleBC - business rules for Oracle backend
+
+A dynamic loaded class by SyncBC for 'type = Oracle' connection section.
+Must implement method load() when as source and sync() when as destination database
+"""
 
 from dao.ConfigDAO import ConfigDAO
 from dao.OracleDAO import OracleDAO
