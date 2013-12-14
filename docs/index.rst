@@ -9,5 +9,4 @@ Indice
    using.rst
    backends.rst
    converters.rst
-   api-doc.rst
 
