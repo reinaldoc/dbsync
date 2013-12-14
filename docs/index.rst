@@ -12,6 +12,7 @@ Contents:
    :maxdepth: 2
 
    installing.rst
+   using.rst
 
 Indices and tables
 ==================

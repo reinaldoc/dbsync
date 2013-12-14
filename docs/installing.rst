@@ -1,7 +1,7 @@
 
-***********************
-Building and installing
-***********************
+**********
+Installing
+**********
 
 dbsync - A synchronization framework
 
