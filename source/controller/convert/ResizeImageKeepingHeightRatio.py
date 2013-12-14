@@ -8,6 +8,9 @@ from dao.ImageDAO import ImageDAO
 class ResizeImageKeepingHeightRatio(object):
 
 	def __init__(self, data, args=()):
+		"""
+		Receive the data to be converted and parameters.
+		"""
 		self.value = None
 		if not args or type(args[0]) != type(0):
 			print("WARN: invalid parameters for ResizeImageKeepingHeightRatio: %s" % args)
