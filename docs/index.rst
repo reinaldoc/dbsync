@@ -1,23 +1,13 @@
-.. dbsync documentation master file, created by
-   sphinx-quickstart on Sat Dec 14 17:15:11 2013.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
 
-Welcome to dbsync's documentation!
-==================================
-
-Contents:
+Indice
+======
 
 .. toctree::
    :maxdepth: 2
 
    installing.rst
    using.rst
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   backends.rst
+   converters.rst
+   api-doc.rst
 
