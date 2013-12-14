@@ -15,7 +15,7 @@ All synchronization rules is defined on dbsync.conf
 Connection section
 ------------------
 
-A connection section is identified by a backend on 'type' attribute.:
+A connection section is identified by a backend on 'type' attribute. ::
 
     [Oracle1 DB]
     type = Oracle
@@ -28,7 +28,7 @@ A connection section is identified by a backend on 'type' attribute.:
 Synchronization section
 -----------------------
 
-A synchronization section is identified by 'type = sync'.:
+A synchronization section is identified by 'type = sync'. ::
 
     [Sync SGRH]
     type = sync
