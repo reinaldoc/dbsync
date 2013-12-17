@@ -54,6 +54,11 @@ class LdapBC:
 		# process "to update template"
 		new_attributes = self.update_template.copy()
 		for key, value in new_attributes.items():
+			# attributes to be removed from LDAP
+			if value is None:
+				del new_attributes[key]
+				continue
+		
 			# process binary attributes
 			if key.split(";")[0] in self.binary_attrs:
 				value = data[self.__get_template_id(value, len(data))]
@@ -62,6 +67,7 @@ class LdapBC:
 				else:
 					del new_attributes[key]
 				continue
+
 			# process string attributes
 			new_attributes[key] = Strings.replace_from_array(new_attributes.get(key), data, SyncBC.get_source_connection_encoding(sync_section))
 			if new_attributes[key].find("%") != -1:
@@ -70,7 +76,8 @@ class LdapBC:
 				new_attributes[key] = [new_attributes[key]]
 
 		Info("DN for update: %s" % dn)
-		Debug("Rules for update: %s" % new_attributes)
+		Debug("Current attributes: %s" % old_attributes)
+		Debug("Rules for update:   %s" % new_attributes)
 		self.conn.modify(dn, old_attributes, new_attributes)
 
 	def __get_template_id(self, template, max_id):
