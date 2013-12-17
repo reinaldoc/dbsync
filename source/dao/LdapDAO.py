@@ -64,12 +64,12 @@ class LdapDAO(object):
 				return ldap_result
 
 	def modify(self, dn, oldattrs, newattrs):
-		if not dn or not newattrs:
+		if not dn or newattrs is None:
 			return
 		modstruct = modlist.modifyModlist(oldattrs, newattrs)
 		Info("Ldap style struct: %s" % modstruct)
 		if modstruct:
-			Debug("Update result: %s" % self.l.modify(dn, modlist.modifyModlist(oldattrs, newattrs)))
+			self.l.modify(dn, modlist.modifyModlist(oldattrs, newattrs))
 
 	def test(self):
 		if not self.c.config.get("General", "stage") == "Test":
