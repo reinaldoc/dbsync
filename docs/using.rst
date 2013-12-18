@@ -6,8 +6,8 @@ Using
 dbsync is extensible to support any kind of data synchronization,
 and data conversion. All synchronization rules are defined on dbsync.conf 
 
-dbsync.conf - Sync definitions
-==============================
+Synchronization definitions
+===========================
 
 All synchronization rules are defined on dbsync.conf
 
