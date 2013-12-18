@@ -31,6 +31,9 @@ class LdapBC:
 	def load(self):
 		return []
 
+	def flush(self):
+		pass
+
 	def sync(self, sync_section, data):
 	
 		# make a query from a "to match template"

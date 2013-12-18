@@ -38,3 +38,4 @@ if __name__ == '__main__':
 		for data in s_handle.load():
 			data = SyncBC.convert(sync_section, data)
 			d_handle.sync(sync_section, data)
+		d_handle.flush()

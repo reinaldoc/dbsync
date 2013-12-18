@@ -20,5 +20,8 @@ class OracleBC:
 	def load(self):
 		return self.conn.execute(self.c.config.get(self.sync_section, "from query"))
 
+	def flush(self):
+		pass
+
 	def sync(self, sync_section, row):
 		pass
