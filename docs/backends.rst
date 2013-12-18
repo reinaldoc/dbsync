@@ -3,7 +3,7 @@
 Backends
 ********
 
-The backends is responsible for acquire and persist data on a database.
+The backends are responsible for acquire and persist data on a database.
 
 Ldap
 ====
