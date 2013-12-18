@@ -1,4 +1,6 @@
-ldapsync
-========
+dbsync - a synchronization framework
+====================================
 
-A tool to sync LDAP with a database
+dbsync framework is extensible to support any kind of data synchronization data conversion.
+
+See more: http://dbsync.readthedocs.org
