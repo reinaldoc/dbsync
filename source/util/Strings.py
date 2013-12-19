@@ -18,3 +18,18 @@ class Strings(object):
 					data = data.decode(from_encoding).encode(to_encoding)
 				string = string.replace("%%%s" % i, data)
 		return string
+
+	@staticmethod
+	def capitalize(string):
+		"""
+		Receive a string and returns a copy of that with all words capitalized,
+		except the prepositions.
+		"""
+		prepositions = (" Da ", " Das ", " Do ", " Dos ",
+                                " De ", " Du ", " E ")
+		
+		string = string.title()
+
+		for prep in prepositions:
+			string = string.replace(prep, prep.lower())
+		return string
