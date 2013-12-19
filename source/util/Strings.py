@@ -33,3 +33,16 @@ class Strings(object):
 		for prep in prepositions:
 			string = string.replace(prep, prep.lower())
 		return string
+
+	@staticmethod
+	def replace_string(string, actual, to):
+		"""
+		Replace strings, receiving the "actual" string and replacing it as "to" string.
+		Also, converts any entry type to string.
+		"""
+		try:
+			string = string.replace(actual, to)
+		except Exception as erro:
+			print(erro)
+		
+		return string
