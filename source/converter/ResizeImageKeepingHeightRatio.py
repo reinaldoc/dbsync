@@ -11,20 +11,16 @@ class ResizeImageKeepingHeightRatio(object):
 		"""
 		Receive the data to be converted and parameters.
 		"""
-		self.value = None
-
 		if not args or type(args[0]) != type(0):
 			print("Error: ResizeImageKeepingHeightRatio takes 1 integer argument: %s" % args)
 			return
 
-		width = args[0]
+		self.data = data
+		self.width = args[0]
 		try:
-			output_format = args[1]
+			self.output_format = args[1]
 		except IndexError:
-			output_format = None
-
-		if data:
-			self.value = Images.resize_string_keeping_height_ratio(data, args[0], output_format=output_format)
+			self.output_format = None
 
 	def get_value(self):
-		return self.value
+		return Images.resize_string_keeping_height_ratio(self.data, self.width, self.output_format)
