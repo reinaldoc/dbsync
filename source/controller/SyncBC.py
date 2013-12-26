@@ -81,19 +81,18 @@ class SyncBC:
 		return ConfigDAO().get_sync_sections()
 
 	@staticmethod
-	def get_convert_data(sync_section):
+	def get_converters(sync_section):
 		try:
-			convert_data = ConfigDAO().get(sync_section, "convert data")
-			if convert_data:
-				return ast.literal_eval(convert_data)
+			converters = ConfigDAO().get(sync_section, "converters")
+			if converters:
+				return ast.literal_eval(converters)
 		except SyntaxError, e:
 			print("Error parsing convert data from '%s': %s" % (sync_section, e[1][3]))
 		return []
 
 	@staticmethod
 	def convert(sync_section, data):
-		# unpack variables
-		rules = SyncBC.get_convert_data(sync_section)
+		rules = SyncBC.get_converters(sync_section)
 		if not rules:
 			return data
 
@@ -107,19 +106,20 @@ class SyncBC:
 
 	@staticmethod
 	def __convert(data, rule):
+		# unpack variables
 		data_id = rule[0]
-		convert_class = rule[1]
-		class_args = rule[2:]
+		converter_class = rule[1]
+		converter_args = rule[2:]
 
 		# process data conversion
-		callable_converter = SyncBC.__get_convert_instance(rule[1])
+		callable_converter = SyncBC.__get_convert_instance(converter_class)
 		if data_id == -1:
-			data = callable_converter(data, class_args).get_value()
+			data = callable_converter(data, converter_args).get_value()
 		else:
-			data[data_id] = callable_converter(data[data_id], class_args).get_value()
+			data[data_id] = callable_converter(data[data_id], converter_args).get_value()
 
 		return data
 
 	@staticmethod
 	def __get_convert_instance(clazz):
-		return Clazz.get_instance("controller.convert.%s.%s" % (clazz, clazz))
+		return Clazz.get_instance("converter.%s.%s" % (clazz, clazz))
