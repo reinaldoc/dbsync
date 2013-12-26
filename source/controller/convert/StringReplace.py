@@ -14,17 +14,18 @@ class StringReplace(object):
 		Receive the data to be converted and parameters.
 		"""
 		self.value = data
+
 		if not data:
-			print("WARN: data invalid parameters")
 			return
 
-		actual_string = args[0]
-		to_string = args[1]		
-
 		try:
-			self.value = Strings.replace_string(data, actual_string, to_string)
-		except Exception as erro:
-			print(erro)
+			s_from = args[0]
+			s_to = args[1]
+			self.value = Strings.replace_string(data, s_from, s_to)
+		except IndexError:
+			print("Error: StringReplace takes exactly 2 arguments (%s given): %s" % (len(args), args) )
+		except Exception, e:
+			print(e)
 
 	def get_value(self):
 		return self.value
