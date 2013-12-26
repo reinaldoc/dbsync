@@ -4,7 +4,7 @@ ConfigDAO - provide access to configuration file
 A singleton class to provide access and make validation to configuration file
 """
 
-import ConfigParser
+import ConfigParser, os
 
 class ConfigDAO(object):
 
@@ -25,7 +25,7 @@ class ConfigDAO(object):
 		# Initialize
 		self.sync_sections = None
 		self.config = ConfigParser.ConfigParser()
-		self.config.read("dbsync.conf")
+		self.config.read("%s/dbsync.conf" % os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 		self.__validate_config()
 
 	def __validate_config(self):
