@@ -12,8 +12,9 @@ class ResizeImageKeepingHeightRatio(object):
 		Receive the data to be converted and parameters.
 		"""
 		self.value = None
+
 		if not args or type(args[0]) != type(0):
-			print("WARN: invalid parameters for ResizeImageKeepingHeightRatio: %s" % args)
+			print("Error: ResizeImageKeepingHeightRatio takes 1 integer argument: %s" % args)
 			return
 
 		width = args[0]
