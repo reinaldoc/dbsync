@@ -23,5 +23,5 @@ class OracleBC:
 	def flush(self):
 		pass
 
-	def sync(self, sync_section, row):
+	def sync(self, data):
 		pass

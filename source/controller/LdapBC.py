@@ -34,10 +34,10 @@ class LdapBC:
 	def flush(self):
 		pass
 
-	def sync(self, sync_section, data):
+	def sync(self, data):
 	
 		# make a query from a "to match template"
-		query = SyncBC.get_match_query(sync_section, data)
+		query = SyncBC.get_match_query(self.sync_section, data)
 		if query is None:
 			return
 		Info("\nIdentity query: %s" % query)
@@ -72,7 +72,7 @@ class LdapBC:
 				continue
 
 			# process string attributes
-			new_attributes[key] = Strings.replace_from_array(new_attributes.get(key), data, SyncBC.get_source_connection_encoding(sync_section))
+			new_attributes[key] = Strings.replace_from_array(new_attributes.get(key), data, SyncBC.get_source_connection_encoding(self.sync_section))
 			if new_attributes[key].find("%") != -1:
 				del new_attributes[key]
 			else:
