@@ -14,8 +14,8 @@ class NameUpperCase(object):
 		Receive the data to be converted and parameters.
 		"""
 		self.value = data
-		if not data:
-			print("WARN: data invalid parameters")
+
+		if not data: 
 			return
 
 		self.value = Strings.capitalize(data)
