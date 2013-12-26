@@ -3,7 +3,7 @@ ResizeImageKeepingHeightRatio - a converter to resize images based on original r
 
 """
 
-from dao.ImageDAO import ImageDAO
+from util.Images import Images
 
 class ResizeImageKeepingHeightRatio(object):
 
@@ -24,7 +24,7 @@ class ResizeImageKeepingHeightRatio(object):
 			output_format = None
 
 		if data:
-			self.value = ImageDAO.resize_string_keeping_height_ratio(data, args[0], output_format=output_format)
+			self.value = Images.resize_string_keeping_height_ratio(data, args[0], output_format=output_format)
 
 	def get_value(self):
 		return self.value

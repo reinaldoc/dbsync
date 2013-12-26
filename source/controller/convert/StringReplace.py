@@ -4,7 +4,6 @@ as parameters
 
 """
 
-from dao.ImageDAO import ImageDAO
 from util.Strings import Strings
 
 class StringReplace(object):

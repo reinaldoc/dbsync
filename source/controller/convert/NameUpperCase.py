@@ -4,7 +4,6 @@ string to uppercase
 
 """
 
-from dao.ImageDAO import ImageDAO
 from util.Strings import Strings
 
 class NameUpperCase(object):

@@ -1,12 +1,12 @@
 """
-ImageDAO - manipulate images
+Images - manipulate images
 
 """
 
 import Image, ImageOps
 from cStringIO import StringIO
 
-class ImageDAO():
+class Images():
 
 	@staticmethod
 	def resize_image_keeping_height_ratio(image, width, resizemode=Image.ANTIALIAS):
@@ -21,7 +21,7 @@ class ImageDAO():
 		if output_format is None:
 			output_format = image.format
 
-		image = ImageDAO.resize_image_keeping_height_ratio(image, width)
+		image = Images.resize_image_keeping_height_ratio(image, width)
 		result = StringIO()
 		image.save(result, format=output_format)
 		return result.getvalue()
