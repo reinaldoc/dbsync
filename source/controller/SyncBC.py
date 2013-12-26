@@ -1,7 +1,7 @@
 """
 SyncBC - support code to synchronization
 
-Load dynamically business rules for backend base on 'type = Oracle' connection section
+Load dynamically backends and converters processor support code
 """
 
 import ast
@@ -93,20 +93,30 @@ class SyncBC:
 	@staticmethod
 	def convert(sync_section, data):
 		# unpack variables
-		rule = SyncBC.get_convert_data(sync_section)
-		if not rule:
+		rules = SyncBC.get_convert_data(sync_section)
+		if not rules:
 			return data
-		
+
+		if type(rules[0]) != type(()):
+			rules = (rules,)
+
+		for rule in rules:
+			data = SyncBC.__convert(data, rule)
+
+		return data
+
+	@staticmethod
+	def __convert(data, rule):
 		data_id = rule[0]
 		convert_class = rule[1]
 		class_args = rule[2:]
 
-		# process data convertation
-		convert_class_callable = SyncBC.__get_convert_instance(rule[1])
-		convert_class_instance = convert_class_callable(data[data_id], class_args)
-		converted_data = convert_class_instance.get_value()
-		if converted_data is not None:
-			data[data_id] = converted_data
+		# process data conversion
+		callable_converter = SyncBC.__get_convert_instance(rule[1])
+		if data_id == -1:
+			data = callable_converter(data, class_args).get_value()
+		else:
+			data[data_id] = callable_converter(data[data_id], class_args).get_value()
 
 		return data
 
