@@ -74,8 +74,11 @@ class LdapBC:
 			# process string attributes
 			new_attributes[key] = Strings.replace_from_array(new_attributes.get(key), data, SyncBC.get_source_connection_encoding(self.sync_section))
 			if new_attributes[key].find("%") != -1:
+				# keep old value or don't add to LDAP
 				if old_attributes.has_key(key):
 					new_attributes[key] = old_attributes[key]
+				else:
+					del new_attributes[key]
 			else:
 				new_attributes[key] = [new_attributes[key]]
 
