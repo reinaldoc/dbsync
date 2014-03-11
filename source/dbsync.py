@@ -31,10 +31,10 @@ if __name__ == '__main__':
 	for sync_section in SyncBC.get_sync_sections():
 
 		Info("Synchronizing '%s'..." % sync_section)
-		s_handle = SyncBC.get_source_handle(sync_section)
-		d_handle = SyncBC.get_dest_handle(sync_section)
+		a_backend = SyncBC.get_acquire_backend(sync_section)
+		p_backend = SyncBC.get_persist_backend(sync_section)
 
-		for data in s_handle.load():
+		for data in a_backend.load():
 			data = SyncBC.convert(sync_section, data)
-			d_handle.sync(data)
-		d_handle.flush()
+			p_backend.sync(data)
+		p_backend.flush()

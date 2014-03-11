@@ -1,14 +1,14 @@
 """
-OracleBC - business rules for Oracle backend
+Oracle - implementation for acquire data from Oracle database
 
 A dynamic loaded class by SyncBC for 'type = Oracle' connection section.
-Must implement method load() when as source and sync() when as destination database
+Must implement the method load()
 """
 
 from dao.ConfigDAO import ConfigDAO
 from dao.OracleDAO import OracleDAO
 
-class OracleBC:
+class Oracle:
 
 	def __init__(self, db_section, sync_section):
 		self.c = ConfigDAO()
@@ -19,9 +19,3 @@ class OracleBC:
 
 	def load(self):
 		return self.conn.execute(self.c.config.get(self.sync_section, "from query"))
-
-	def flush(self):
-		pass
-
-	def sync(self, data):
-		pass

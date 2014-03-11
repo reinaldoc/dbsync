@@ -1,8 +1,8 @@
 """
-LdapBC - business rules for Ldap backend
+Ldap - implementation for persist data to LDAP
 
 A dynamic loaded class by SyncBC for 'type = Ldap' connection section.
-Must implement method load() when as source and sync() when as destination database
+Must implement the methods sync() and flush()
 """
 
 from dao.ConfigDAO import ConfigDAO
@@ -12,7 +12,7 @@ from util.Strings import Strings
 from util.Message import Debug
 from util.Message import Info
 
-class LdapBC:
+class Ldap:
 
 	def __init__(self, db_section, sync_section):
 		self.c = ConfigDAO()
@@ -27,9 +27,6 @@ class LdapBC:
 			if key in self.binary_attrs:
 				self.update_template["%s;binary" % key] = self.update_template[key]
 				del self.update_template[key]
-
-	def load(self):
-		return []
 
 	def flush(self):
 		pass
@@ -72,7 +69,7 @@ class LdapBC:
 				continue
 
 			# process string attributes
-			new_attributes[key] = Strings.replace_from_array(new_attributes.get(key), data, SyncBC.get_source_connection_encoding(self.sync_section))
+			new_attributes[key] = Strings.replace_from_array(new_attributes.get(key), data, SyncBC.get_acquire_connection_encoding(self.sync_section))
 			if new_attributes[key].find("%") != -1:
 				# keep old value or don't add to LDAP
 				if old_attributes.has_key(key):

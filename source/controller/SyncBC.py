@@ -12,12 +12,15 @@ from util.Strings import Strings
 
 class SyncBC:
 
+	BACKEND_ACQUIRE_PACKAGE = "backend.acquire"
+	BACKEND_PERSIST_PACKAGE = "backend.persist"
+
 	@staticmethod
-	def get_source_connection_section(sync_section):
+	def get_acquire_connection_section(sync_section):
 		return ConfigDAO().config.get(sync_section, "from")
 
 	@staticmethod
-	def get_dest_connection_section(sync_section):
+	def get_persist_connection_section(sync_section):
 		return ConfigDAO().config.get(sync_section, "to")
 
 	@staticmethod
@@ -25,8 +28,8 @@ class SyncBC:
 		return ConfigDAO().config.get(db_section, "encoding")
 
 	@staticmethod
-	def get_source_connection_encoding(sync_section):
-		return SyncBC.get_connection_encoding(SyncBC.get_source_connection_section(sync_section))
+	def get_acquire_connection_encoding(sync_section):
+		return SyncBC.get_connection_encoding(SyncBC.get_acquire_connection_section(sync_section))
 
 	@staticmethod
 	def get_connection_binary_attrs(db_section):
@@ -36,41 +39,36 @@ class SyncBC:
 		return []
 
 	@staticmethod
-	def __get_handle(db_section, sync_section):
+	def __get_backend(db_section, sync_section, backend_package):
 		type = ConfigDAO().config.get(db_section, "type")
-		conn = Clazz.get_instance("controller.%s.%s" % ( "%sBC" % type, "%sBC" % type))
+		conn = Clazz.get_instance("%s.%s.%s" % (backend_package, type, type))
 		return conn(db_section, sync_section)
 
 	@staticmethod
-	def get_handle(db_section, sync_section):
-		handle = SyncBC.__get_handle(db_section, sync_section)
-		return handle
+	def get_acquire_backend(sync_section):
+		acquire_db_section = SyncBC.get_acquire_connection_section(sync_section)
+		return SyncBC.__get_backend(acquire_db_section, sync_section, BACKEND_ACQUIRE_PACKAGE)
 
 	@staticmethod
-	def get_source_handle(sync_section):
-		source_db_section = SyncBC.get_source_connection_section(sync_section)
-		return SyncBC.get_handle(source_db_section, sync_section)
+	def get_persist_backend(sync_section):
+		persist_db_section = SyncBC.get_persist_connection_section(sync_section)
+		return SyncBC.__get_backend(persist_db_section, sync_section, BACKEND_PERSIST_PACKAGE)
 
 	@staticmethod
-	def get_dest_handle(sync_section):
-		dest_db_section = SyncBC.get_dest_connection_section(sync_section)
-		return SyncBC.get_handle(dest_db_section, sync_section)
-
-	@staticmethod
-	def	get_field_types(sync_section):
+	def get_field_types(sync_section):
 		return ConfigDAO().get(sync_section, "to field type")
 
 	@staticmethod
-	def	get_update_template(sync_section):
+	def get_update_template(sync_section):
 		return ast.literal_eval(ConfigDAO().get(sync_section, "to update template"))
 
 	@staticmethod
-	def	get_match_template(sync_section):
+	def get_match_template(sync_section):
 		return ConfigDAO().get(sync_section, "to match template")
 
 	@staticmethod
-	def	get_match_query(sync_section, data):
-		query = Strings.replace_from_array(SyncBC.get_match_template(sync_section), data, SyncBC.get_source_connection_encoding(sync_section))
+	def get_match_query(sync_section, data):
+		query = Strings.replace_from_array(SyncBC.get_match_template(sync_section), data, SyncBC.get_acquire_connection_encoding(sync_section))
 		if query.find("%") != -1:
 			print "WARN: can not build a query to find a id for: %s" % data
 			return None
