@@ -9,8 +9,8 @@ convert rules are processed by parameters in **convert data** property.
 ResizeImageKeepingHeightRatio
 =============================
 
-The converter ResizeImageKeepingHeightRatio resize images keeping height ratio.
-Use case: ::
+This converter resize images keeping height ratio and support file format 
+spacification. Use case: ::
 
     [Sync Picture]
     type = sync
@@ -33,8 +33,8 @@ Use case: ::
 NameUpperCase
 =============
 
-The converter ResizeImageKeepingHeightRatio resize images keeping height ratio.
-Use case: ::
+This converter receives a string parameter and formats it with all words 
+capitalized, except it's prepositions. Use case: ::
 
     [Sync Personal Info]
     type = sync
