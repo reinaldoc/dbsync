@@ -21,8 +21,7 @@ spacification. Use case: ::
 
 * **convert data**: specify the converters.
 
-1.  The first parameter (mandatory) is the field to be passed to converter. 0 
-for E_MAIL, 1 for PICTURE.
+1.  The first parameter (mandatory) is the field to be passed to converter. 0 for E_MAIL, 1 for PICTURE.
 
 2.  The second parameter (mandatory) is the converter class name.
 
@@ -43,8 +42,7 @@ capitalized, except it's prepositions. Use case: ::
     from query = SELECT NAME, SURNAME from PEOPLE where NAME like 'tiago%'
     convert data = ( (0, "NameUpperCase"), (1, "NameUpperCase") )
 
-1.  The first parameter (mandatory) is the field to be passed to converter. 0 
-for NAME, 1 for SURNAME.
+1.  The first parameter (mandatory) is the field to be passed to converter. 0 for NAME, 1 for SURNAME.
 
 2.  The second parameter (mandatory) is the converter class name.
 
@@ -62,8 +60,7 @@ parameter and replaces it by another passed as second parameter. Use case: ::
     from query = SELECT NAME, SURNAME, BIRTH_DATE from PEOPLE'
     convert data = ( (2, "StringReplace", "-", "/") )
     
-1.  The first parameter (mandatory) is the field to be passed to converter. 0 
-for NAME, 1 for SURNAME or 2 for BIRTH_DATE.
+1.  The first parameter (mandatory) is the field to be passed to converter. 0 for NAME, 1 for SURNAME or 2 for BIRTH_DATE.
 
 2.  The second parameter (mandatory) is the converter class name.
 
