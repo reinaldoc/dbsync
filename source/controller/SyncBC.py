@@ -47,12 +47,12 @@ class SyncBC:
 	@staticmethod
 	def get_acquire_backend(sync_section):
 		acquire_db_section = SyncBC.get_acquire_connection_section(sync_section)
-		return SyncBC.__get_backend(acquire_db_section, sync_section, BACKEND_ACQUIRE_PACKAGE)
+		return SyncBC.__get_backend(acquire_db_section, sync_section, SyncBC.BACKEND_ACQUIRE_PACKAGE)
 
 	@staticmethod
 	def get_persist_backend(sync_section):
 		persist_db_section = SyncBC.get_persist_connection_section(sync_section)
-		return SyncBC.__get_backend(persist_db_section, sync_section, BACKEND_PERSIST_PACKAGE)
+		return SyncBC.__get_backend(persist_db_section, sync_section, SyncBC.BACKEND_PERSIST_PACKAGE)
 
 	@staticmethod
 	def get_field_types(sync_section):

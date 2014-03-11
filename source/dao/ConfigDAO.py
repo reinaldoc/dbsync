@@ -35,9 +35,7 @@ class ConfigDAO(object):
 		for sync_section in self.get_sync_sections():
 			try:
 				self.config.get(sync_section, "from")
-				self.config.get(sync_section, "from query")
 				self.config.get(sync_section, "to")
-				self.config.get(sync_section, "to update template")
 			except ConfigParser.NoOptionError, e:
 				print("Attribute '%s' is mandatory for synchronization '%s'. Aborting..." % (e[0], e[1]))
 				exit()
