@@ -42,20 +42,20 @@ A synchronization section is identified by 'type = sync'. ::
 
     [Sync SGRH]
     type = sync
-    from = Oracle1 DB
-    from query = SELECT NOM, E_MAIL, TELEFONE, FONE_CELULAR_SERV, RAMAL, SIGLA_UNIDADE, LOTACAO, CARGO from vw_mat_servidores where NOM like 'REI%'
-    to = LDAP1 DB
-    to match template = (&(objectClass=user)(mail=%1))
-    to update template = { "telephoneNumber": "%4", "homePhone": "%2", "mobile":"%3", "physicalDeliveryOfficeName": "%5 - %6", "department": "%5 - %6", "title": "%7", "description": "%7" }
+    acquire = Oracle1 DB
+    acquire query = SELECT NAME, MAIL, HOMEPHONE, MOBILEPHONE, PHONE, ORGUNIT_INITIALS, ORGUNIT, TITLE from VW_EMPLOYEE where NAME like 'REI%'
+    persist = LDAP1 DB
+    persist lookup dn = (&(objectClass=user)(mail=%1))
+    persist update rules = { "displayName": "%0", "homePhone": "%2", "mobile":"%3", "telephoneNumber": "%4", "department": "%5 - %6", "title": "%7" }
 
 
 Each synchronization section is processed sequentially, and have three
 mandatories attributes:
 
 * **type**: identify a synchronization section when value is exactly **sync**.
-* **from**: define the backend section name to be used to acquire data (data source).
-* **to**: define the backend section name to be used to persist data (data destination).
+* **acquire**: define the backend section name to be used to acquire data (data source).
+* **persist**: define the backend section name to be used to persist data (data destination).
 
 Others attributes are specified by the backend implementation, see backend
 documentation. Each backend have mandatories and optionals attributes. A same
-backend can be used to acquire and persit data. 
+backend can be used to acquire and persist data.
