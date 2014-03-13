@@ -16,7 +16,7 @@ spacification. Use case: ::
     type = sync
     acquire = Example DB
     acquire query = SELECT E_MAIL, PICTURE from vw_foto where E_MAIL like 'rei%'
-    converters = ( (1, "ResizeImageKeepingHeightRatio", 200, "JPEG") )
+    converters = (1, "ResizeImageKeepingHeightRatio", 200, "JPEG")
     #...
 
 
@@ -57,7 +57,7 @@ parameter and replaces it by another passed as second parameter. Use case: ::
     type = sync
     acquire = Example DB
     acquire query = SELECT NAME, SURNAME, BIRTH_DATE from PEOPLE'
-    converters = ( (2, "StringReplace", "-", "/") )
+    converters = (2, "StringReplace", "-", "/")
     #...
     
 * **The first parameter (mandatory)**: the field to be passed to converter. 0 for NAME, 1 for SURNAME or 2 for BIRTH_DATE.
