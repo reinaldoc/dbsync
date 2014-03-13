@@ -28,7 +28,7 @@ class LdapDAO(object):
 	def getId(self, ldap_filter):
 		result = self.getSingleResult(ldap_filter)
 		if len(result) == 0:
-			print "WARN: no entry found on destination database for this query: %s" % ldap_filter
+			print("WARN: no entry found on destination database for this query: %s" % ldap_filter)
 			return None
 		return result.keys()[0]
     
@@ -57,7 +57,7 @@ class LdapDAO(object):
 					#attr, value = dn.split(',')[0].split('=')
 					#ldap_result[dn] = {'ref': [result_data[0][1][0]], 'objectClass': ['referral', 'extensibleObject'], attr: [value]}
 				else:
-					print "ERROR: result type not implemented. %s" % result_type
+					print("ERROR: result type not implemented. %s" % result_type)
 				return ldap_result
 		except ldap.LDAPError, e:
 			if e[0]["desc"] == "Size limit exceeded":
@@ -75,16 +75,16 @@ class LdapDAO(object):
 		if not self.c.config.get("General", "stage") == "Test":
 			return
 
-		print "\nRunning test to '%s'" % self.db_section
+		print("\nRunning test to '%s'" % self.db_section)
 		result = self.search("(mail=rei@tre-pa.gov.br)", "DC=REDETRE,DC=JUS,DC=BR")
 		for dn in result.keys():
-			print "DN:     " + dn
-			print "NOME:   " + result.get(dn).get("cn")[0]
-			print "CARGO:  " + result.get(dn).get("description")[0]
-			print "E-MAIL: " + result.get(dn).get("mail")[0]
-			print
-			print "## LDAP ATTRIBUTES ###"
-			print result.get(dn).keys()
-			print
-			print "### DATA ###"
-			print result.get(dn)
+			print("DN:     " + dn)
+			print("NOME:   " + result.get(dn).get("cn")[0])
+			print("CARGO:  " + result.get(dn).get("description")[0])
+			print("E-MAIL: " + result.get(dn).get("mail")[0])
+			print()
+			print("## LDAP ATTRIBUTES ###")
+			print(result.get(dn).keys())
+			print()
+			print("### DATA ###")
+			print(result.get(dn))

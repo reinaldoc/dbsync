@@ -37,7 +37,7 @@ class OracleDAO(object):
 			print("Malformed query '%s'" % query)
 			sys.exit()
 		except Exception, e:
-			print e[0]
+			print(e[0])
 			sys.exit()
 
 	def convert(self, ilist):

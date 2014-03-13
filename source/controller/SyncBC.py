@@ -70,7 +70,7 @@ class SyncBC:
 	def get_match_query(sync_section, data):
 		query = Strings.replace_from_array(SyncBC.get_match_template(sync_section), data, SyncBC.get_acquire_connection_encoding(sync_section))
 		if query.find("%") != -1:
-			print "WARN: can not build a query to find a id for: %s" % data
+			print ("WARN: can not build a query to find a id for: %s" % data)
 			return None
 		return query
 
