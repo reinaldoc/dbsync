@@ -9,14 +9,16 @@ and data conversion. All synchronization rules are defined on dbsync.conf
 Synchronization definitions
 ===========================
 
-All synchronization rules are defined on dbsync.conf
+All synchronization rules are defined on dbsync.conf. This configuration has
+two sections types. The backend section define the acquire and persist
+methods for a synchronization section.
 
-Connection section
-------------------
+Backend section
+---------------
 
-A connection section is identified by a backend on 'type' attribute.
-The example below has 'Oracle1 DB' as connection name and use a 'OracleBC'
-backend. ::
+A backend section is identified by a backend on 'type' attribute.
+The example below has 'Oracle1 DB' as backend section name and use 'Oracle'
+as backend. ::
 
     [Oracle1 DB]
     type = Oracle
@@ -25,15 +27,16 @@ backend. ::
     password = xxxxx
     encoding = iso-8859-1   
 
-Each backend is a class on 'controller' package prefixed with 'BC' like
-OracleBC. Each backend class must implement method **load()** to be used as
-source connection and **sync()** and **flush()** to be used as destination
-connection.
+Each backend is a class on 'backend/acquire' or 'backend/persist' packages
+like Oracle or Ldap. Each acquire backend class must implement method **load()**
+and will be used as data source. Each persist backend class must implement the
+methods **sync()** and **flush()** will be used as data destination.
 
-A backend can be created to read or write any kind of data. Whether to
-read data from an spread sheet file or write data on a hierarchical database.
+A backend can be created to acquire or persit any kind of data. Whether to
+acquire data from an spread sheet file, from snmp or a relational database
+or persist data on csv file, a hierarchical database.
 
-Connection section name must be reffered by a synchronization section or will
+Backend section name must be reffered by a synchronization section or will
 be ignored.
 
 Synchronization section
@@ -54,9 +57,8 @@ Each synchronization section is processed sequentially, and have three
 mandatories attributes:
 
 * **type**: identify a synchronization section when value is exactly **sync**.
-* **from**: define the source connection name.
-* **to**: define the destination connection name.
+* **from**: define the backend section name to be used as data source.
+* **to**: define the backend section name to be used as data destination.
 
-Others attributes are specified by the connection backend.
-
-
+Others attributes are specified by the backend implementation, see backend
+documentation. Eack backend have mandatories and optionals attributes.
