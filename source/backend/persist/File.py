@@ -6,6 +6,7 @@ Must implement the methods sync() and flush()
 """
 
 import ast
+import collections
 from dao.ConfigDAO import ConfigDAO
 from dao.FileDAO import FileDAO
 from util.Strings import Strings
@@ -18,22 +19,31 @@ class File:
 		self.sync_section = sync_section
 		self.path_template = ast.literal_eval(self.c.config.get(sync_section, "to path template"))
 		self.field_content = int(self.c.config.get(sync_section, "to field content"))
+		self.mime_types = self.__loadMimeTypes()
 
+	def __loadMimeTypes(self):
+		content = FileDAO.read("/etc/mime.types").replace("\t", " ").split("\n")
+		for element in range(len(content)):
+			#key = content[
+			print(content[element].split(" ",1))
+			#key = content[element].
+		
 	def flush(self):
 		pass
 
 	def sync(self, data):
+		return
 		content = data[self.field_content]
 		
 		data[self.field_content] = ""
 		data[0] = "%s" % data[0]
-		print data
+		print(data)
 
 		#return
 
 		# make the path from "to path template"
 		path = Strings.replace_from_array(self.path_template, data)
-		print "PATH: " + path
+		print("PATH: " + path)
 
 		FileDAO.makedirs(path)
 		FileDAO.writeToFile(path, content)
