@@ -4,17 +4,13 @@ Using
 *****
 
 dbsync is extensible to support any kind of data synchronization,
-and data conversion. All synchronization rules are defined on dbsync.conf 
+and data conversion. All synchronization rules are defined on **dbsync.conf**
 
-Synchronization definitions
-===========================
-
-All synchronization rules are defined on dbsync.conf. This configuration has
-two section types. The backend section to declare the acquire and persist
-backends to be referred by a synchronization section.
+This configuration has two section types. The backend section to declare the
+acquire and persist backends to be referred by a synchronization section.
 
 Backend section
----------------
+===============
 
 A backend section is identified by a backend on 'type' attribute.
 The example below has 'Oracle1 DB' as backend section name and use 'Oracle'
@@ -29,7 +25,7 @@ as backend. ::
 
 Each backend is a class on 'backend/acquire' or 'backend/persist' packages
 like Oracle or Ldap. Each acquire backend class must implement method
-**load()**and each persist backend class must implement the methods
+**load()** and each persist backend class must implement the methods
 **sync(data)** and **flush()**.
 
 A backend can be created to acquire or persit any kind of data. Whether to
@@ -40,7 +36,7 @@ Backend section name must be reffered by a synchronization section or will
 be ignored.
 
 Synchronization section
------------------------
+=======================
 
 A synchronization section is identified by 'type = sync'. ::
 
