@@ -4,13 +4,14 @@ Converters
 **********
 
 The converters are responsible for convert acquired data before persist. The
-convert rules are processed by parameters in **converters** property.
+convert rules are processed by parameters in **converters** property on a
+synchronization section.
 
 ResizeImageKeepingHeightRatio
 =============================
 
-This converter resize images keeping height ratio and support file format 
-spacification. Use case: ::
+This converter resize images keeping height ratio and support image format
+conversion. Use case: ::
 
     [Sync Picture]
     type = sync
@@ -24,15 +25,15 @@ spacification. Use case: ::
 
 * **The second parameter (mandatory)**: the converter class name.
 
-* **The third parameter (mandatory)**: the width to image resize.
+* **The third parameter (mandatory)**: the width to image to be resized.
 
-* **The fourth parameter (optional)**: the image format to convert. If ommited the original format will be used.
+* **The fourth parameter (optional)**: the image format to be converted. If ommited the original format will be used.
 
 NameUpperCase
 =============
 
-This converter receives a string parameter and formats it with all words 
-capitalized, except it's prepositions. Use case: ::
+This converter format a string to all letters capitalized, except it's
+prepositions. Use case: ::
 
     [Sync Personal Info]
     type = sync
@@ -50,8 +51,7 @@ capitalized, except it's prepositions. Use case: ::
 StringReplace
 =============
 
-This converter receives a string, looks up for a substring passed as first 
-parameter and replaces it by another passed as second parameter. Use case: ::
+This converter looks up for a substring and replaces it by another. Use case: ::
 
     [Sync Personal Info]
     type = sync
@@ -68,5 +68,5 @@ parameter and replaces it by another passed as second parameter. Use case: ::
 
 * **The fourth parameter (mandatory)**: the string to substitute.
 
-In this example, all birth date information found in the form xx-xx-xxxx, after the
-application of the converter, will become in the xx/xx/xxxx form.
+In this example, all birth date information found in the form xx-xx-xxxx,
+after the application of the converter, will become in the xx/xx/xxxx form.
