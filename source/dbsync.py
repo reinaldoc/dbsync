@@ -24,9 +24,15 @@ dbsync - A synchronization framework
 __author__ =  'Reinaldo Gil Lima de Carvalho'
 __version__=  '0.1'
 
-from util.Message import Info
+from util.Message import Info 
 from controller.SyncBC import SyncBC
 
+''' 
+Defines de scope of the module dbsync.py. In this case, top-level
+scope, a similar "main program". It's not used as an imported
+module, otherwise a program that reads the standard input of the 
+O.S.
+'''
 if __name__ == '__main__':
 	for sync_section in SyncBC.get_sync_sections():
 

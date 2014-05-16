@@ -4,6 +4,11 @@ SyncBC - support code to synchronization
 Load dynamically backends and converters processor support code
 """
 
+''' 
+ast - abstract syntax trees. Analyzes a Python expression
+and permits the conversion, by ast.literal_eval(), to a
+Python object.
+'''
 import ast
 
 from dao.ConfigDAO import ConfigDAO
@@ -12,6 +17,9 @@ from util.Strings import Strings
 
 class SyncBC:
 
+	'''
+	Informs the location (packages) where the 
+	'''
 	BACKEND_ACQUIRE_PACKAGE = "backend.acquire"
 	BACKEND_PERSIST_PACKAGE = "backend.persist"
 

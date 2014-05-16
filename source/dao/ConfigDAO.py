@@ -24,8 +24,15 @@ class ConfigDAO(object):
 
 		# Initialize
 		self.sync_sections = None
+		
+		# instance a ConfigParser object
 		self.config = ConfigParser.ConfigParser()
+		
 		self.config.read("%s/dbsync.conf" % os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+		''' 
+		os.path.abspath(__file__) is the pathname of the file from which the module was loaded
+		'''
+		
 		self.__validate_config()
 
 	def __validate_config(self):
