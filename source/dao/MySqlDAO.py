@@ -18,17 +18,16 @@ class MySqlDAO(object):
 		self._dbConnection = MySQLdb.connect(self._dbUri, self._dbUser, self._dbPassword)
 		if self._dbSchema:
 			self._dbConnection.select_db(self._dbSchema)
-		self._dbCursor = self.dbConnection.cursor()
+		self._dbCursor = self._dbConnection.cursor()
 	
 	def __del__(self):
-		self.dbConnection.close()
+		self._dbConnection.close()
 	
 	def selectSchema(self, schema):
-		self.dbConnection.select_db(schema)
+		self._dbConnection.select_db(schema)
 		
 	def execute(self, query):
 		try:
-			self.dbCursor.execute(query)
+			self._dbCursor.execute(query)
 		except Error as err:
 			print(err)
-			
