@@ -61,7 +61,7 @@ class ConfigDAO(object):
 		return self.sync_sections
 
 	def get(self, section, key):
-		""" get value by section/attribue from a ConfigParser object. Returns
+		""" get value by section and attribue from a ConfigParser object. Returns
 		None if section or attribute does not exist"""
 		try:
 			return self.config.get(section, key)
