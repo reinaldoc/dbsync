@@ -27,7 +27,6 @@ class MySqlDAO(object):
 		self._dbConnection.select_db(schema)
 		
 	def execute(self, query):
-		try:
-			self._dbCursor.execute(query)
-		except Error as err:
-			print(err)
+		 self._dbCursor.execute(query)
+		 return self._dbCursor.fetchall()
+
