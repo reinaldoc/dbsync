@@ -6,7 +6,9 @@ Must implement the method load()
 """
 
 from dao.ConfigDAO import ConfigDAO
+from dao.FileDAO import FileDAO
 from dao.OracleDAO import OracleDAO
+from util.Message import Debug
 
 class Oracle:
 
@@ -18,4 +20,13 @@ class Oracle:
 		self.conn.execute_results_blob_as_bytes = True
 
 	def load(self):
-		return self.conn.execute(self.c.config.get(self.sync_section, "from query"))
+		if self.c.config.get(self.sync_section, "from query"):
+			sql = self.c.config.get(self.sync_section, "from query")
+			return self.conn.execute(sql)
+		if self.c.config.get(self.sync_section, "from query file"):
+			path = self.c.config.get(self.sync_section, "from query file")
+			sql = FileDAO.read(path)
+			Debug(sql)
+			return self.conn.execute(sql)
+		raise Exception("'from query' or 'from query file' must be defined")
+
