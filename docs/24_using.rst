@@ -42,19 +42,19 @@ A synchronization section is identified by 'type = sync'. ::
 
     [Sync SGRH]
     type = sync
-    acquire = Oracle1 DB
-    acquire query = SELECT NAME, MAIL, HOMEPHONE, MOBILEPHONE, PHONE, ORGUNIT_INITIALS, ORGUNIT, TITLE from VW_EMPLOYEE where NAME like 'REI%'
-    persist = LDAP1 DB
-    persist lookup dn = (&(objectClass=user)(mail=%1))
-    persist update rules = { "displayName": "%0", "homePhone": "%2", "mobile":"%3", "telephoneNumber": "%4", "department": "%5 - %6", "title": "%7" }
+    from = Oracle1 DB
+    from query = SELECT NAME, MAIL, HOMEPHONE, MOBILEPHONE, PHONE, ORGUNIT_INITIALS, ORGUNIT, TITLE from VW_EMPLOYEE where NAME like 'REI%'
+    to = LDAP1 DB
+    to lookup dn = (&(objectClass=user)(mail=%1))
+    to update rules = { "displayName": "%0", "homePhone": "%2", "mobile":"%3", "telephoneNumber": "%4", "department": "%5 - %6", "title": "%7" }
 
 
 Each synchronization section is processed sequentially, and have three
 mandatories attributes:
 
 * **type**: identify a synchronization section when value is exactly **sync**.
-* **acquire**: define the backend section name to be used to acquire data (data source).
-* **persist**: define the backend section name to be used to persist data (data destination).
+* **from**: define the backend section name to be used to acquire data (data source).
+* **to**: define the backend section name to be used to persist data (data destination).
 
 Others attributes are specified by the backend implementation, see backend
 documentation. Each backend have mandatories and optionals attributes. A same
