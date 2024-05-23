@@ -76,11 +76,20 @@ class SyncBC:
 
 	@staticmethod
 	def get_match_query(sync_section, data):
-		query = Strings.replace_from_array(SyncBC.get_match_template(sync_section), data, SyncBC.get_acquire_connection_encoding(sync_section))
-		if query.find("%") != -1:
-			print ("WARN: can not build a query to find a id for: %s" % data)
-			return None
-		return query
+		if SyncBC.get_match_template(sync_section):
+			query = Strings.replace_from_array(SyncBC.get_match_template(sync_section), data, SyncBC.get_acquire_connection_encoding(sync_section))
+			if query.find("%") != -1:
+				print ("WARN: can not build a query to find a id for: %s" % data)
+				return None
+			return query
+		return None
+
+	@staticmethod
+	def get_config_as_list(section, option):
+		config_string = ConfigDAO().get(section, option)
+		if config_string:
+			return ast.literal_eval(config_string)
+		return []
 
 	@staticmethod
 	def get_sync_sections():

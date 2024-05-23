@@ -57,7 +57,7 @@ class LdapDAO(object):
 					#ldap_result[dn] = {'ref': [result_data[0][1][0]], 'objectClass': ['referral', 'extensibleObject'], attr: [value]}
 				else:
 					print("ERROR: result type not implemented. %s" % result_type)
-				return ldap_result
+			return ldap_result
 		except ldap.LDAPError as e:
 			if e[0]["desc"] == "Size limit exceeded":
 				return ldap_result
