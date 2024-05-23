@@ -92,7 +92,7 @@ class SyncBC:
 			converters = ConfigDAO().get(sync_section, "converters")
 			if converters:
 				return ast.literal_eval(converters)
-		except SyntaxError, e:
+		except SyntaxError as e:
 			print("Error parsing convert data from '%s': %s" % (sync_section, e[1][3]))
 		return []
 

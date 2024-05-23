@@ -4,7 +4,7 @@ ConfigDAO - provide access to configuration file
 A singleton class to provide access and make validation to configuration file
 """
 
-import ConfigParser, os
+import configparser, os
 
 class ConfigDAO(object):
 
@@ -25,8 +25,8 @@ class ConfigDAO(object):
 		# Initialize
 		self.sync_sections = None
 		
-		# instance a ConfigParser object
-		self.config = ConfigParser.ConfigParser()
+		# instance a configparser object
+		self.config = configparser.ConfigParser()
 		
 		self.config.read("%s/dbsync.conf" % os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 		''' 
@@ -43,7 +43,7 @@ class ConfigDAO(object):
 			try:
 				self.config.get(sync_section, "from")
 				self.config.get(sync_section, "to")
-			except ConfigParser.NoOptionError, e:
+			except configparser.NoOptionError as e:
 				print("Attribute '%s' is mandatory for synchronization '%s'. Aborting..." % (e[0], e[1]))
 				exit()
 
@@ -56,15 +56,15 @@ class ConfigDAO(object):
 			try:
 				if self.config.get(section, "type") == "sync":
 					self.sync_sections.append(section)
-			except ConfigParser.NoOptionError, e:
+			except configparser.NoOptionError as e:
 				pass
 		return self.sync_sections
 
 	def get(self, section, key):
-		""" get value by section and attribue from a ConfigParser object. Returns
+		""" get value by section and attribue from a configparser object. Returns
 		None if section or attribute does not exist"""
 		try:
 			return self.config.get(section, key)
-		except ConfigParser.NoOptionError, e:
+		except configparser.NoOptionError as e:
 			return None
 

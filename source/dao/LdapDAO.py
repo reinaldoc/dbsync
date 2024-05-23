@@ -23,7 +23,7 @@ class LdapDAO(object):
 		return self.l
 
 	def __bind(self, dn, password):
-		self.l.simple_bind(dn, password)
+		self.l.bind_s(dn, password)
 
 	def getId(self, ldap_filter):
 		result = self.getSingleResult(ldap_filter)
@@ -41,7 +41,6 @@ class LdapDAO(object):
 		return result
 
 	def search(self,ldap_filter="(objectClass=*)",baseDN=None,attrs=None,scope=ldap.SCOPE_SUBTREE):
-
 		try:
 			ldap_result_id = self.l.search(baseDN, scope, ldap_filter, attrs)
 			ldap_result = {}
@@ -59,7 +58,7 @@ class LdapDAO(object):
 				else:
 					print("ERROR: result type not implemented. %s" % result_type)
 				return ldap_result
-		except ldap.LDAPError, e:
+		except ldap.LDAPError as e:
 			if e[0]["desc"] == "Size limit exceeded":
 				return ldap_result
 
