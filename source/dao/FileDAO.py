@@ -14,6 +14,12 @@ class FileDAO(object):
 		f.close()
 
 	@staticmethod
+	def writeToBinaryFile(fileName, content):
+		f = open(fileName, "wb")
+		f.write(content)
+		f.close()
+
+	@staticmethod
 	def makedirs(path):
 		print ("----------" + path)
 		path = os.path.dirname(path)

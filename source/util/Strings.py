@@ -21,7 +21,7 @@ class Strings(object):
 			data = array[i]
 			if data:
 				if type(data) == type('string'):
-					data = data.decode(from_encoding).encode(to_encoding)
+					data = bytes(data, from_encoding).decode(to_encoding)
 				if type(data) == type(0):
 					data = str(data)
 				string = string.replace("%%%s" % i, data)

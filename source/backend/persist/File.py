@@ -23,28 +23,22 @@ class File:
 
 	def __loadMimeTypes(self):
 		content = FileDAO.read("/etc/mime.types").replace("\t", " ").split("\n")
-		for element in range(len(content)):
+		#for element in range(len(content)):
 			#key = content[
-			print(content[element].split(" ",1))
+			#print(content[element].split(" ",1))
 			#key = content[element].
 		
 	def flush(self):
 		pass
 
 	def sync(self, data):
-		return
 		content = data[self.field_content]
-		
-		data[self.field_content] = ""
-		data[0] = "%s" % data[0]
-		print(data)
-
-		#return
+		del data[self.field_content]
 
 		# make the path from "to path template"
 		path = Strings.replace_from_array(self.path_template, data)
-		print("PATH: " + path)
-
+		# print("PATH: " + path)
+		
 		FileDAO.makedirs(path)
-		FileDAO.writeToFile(path, content)
+		FileDAO.writeToBinaryFile(path, content)
 
