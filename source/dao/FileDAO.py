@@ -23,14 +23,12 @@ class FileDAO(object):
 
 	@staticmethod
 	def makedirs(path):
-		print ("----------" + path)
 		path = os.path.dirname(path)
-		print ("----------" + path)
-
 		try:
 			os.makedirs(path)
 		except OSError as e:
-			print(e)
+			if e.errno != 17:
+				print(e)
   
 	@staticmethod
 	def read(filename):

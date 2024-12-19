@@ -42,3 +42,5 @@ class File:
 		FileDAO.makedirs(path)
 		FileDAO.writeToBinaryFile(path, content)
 
+		if self.c.config.get("General", "debug"):
+			print("File '%s' was saved." % path)

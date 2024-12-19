@@ -23,4 +23,4 @@ class ResizeImageKeepingHeightRatio(object):
 			self.output_format = None
 
 	def get_value(self):
-		return Images.resize_string_keeping_height_ratio(self.data, self.width, self.output_format)
+		return Images.resize_bytes_keeping_height_ratio(self.data, self.width, self.output_format)

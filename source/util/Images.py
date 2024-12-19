@@ -11,11 +11,11 @@ from util.Strings import Strings
 class Images():
 
 	@staticmethod
-	def get_image_from_string(string):
-		return Image.open(StringIO(string))
+	def get_image_from_bytes(data):
+		return Image.open(BytesIO(data))
 
 	@staticmethod
-	def get_string_from_image(image, output_format):
+	def get_bytes_from_image(image, output_format):
 		result = BytesIO()
 		image.save(result, format=output_format)
 		return result.getvalue()
@@ -27,17 +27,17 @@ class Images():
 		return image.resize((width, hsize), resizemode)
 
 	@staticmethod
-	def resize_string_keeping_height_ratio(string, width, output_format=None, resizemode=Image.LANCZOS):
-		by = type(bytes())
-		if string is None:
+	def resize_bytes_keeping_height_ratio(data, width, output_format=None, resizemode=Image.LANCZOS):
+		if data is None:
 			return None
 
-		if type(string) != by:
-			raise Exception('field is not bytes: %s' % type(string))
+		by = type(bytes())
+		if type(data) != by:
+			raise Exception('field is not bytes: %s' % type(data))
 
-		image = Image.open(BytesIO(string))
+		image = Images.get_image_from_bytes(data)
 		if output_format is None:
 			output_format = image.format
 
 		image = Images.resize_image_keeping_height_ratio(image, width)
-		return Images.get_string_from_image(image, output_format)
+		return Images.get_bytes_from_image(image, output_format)
