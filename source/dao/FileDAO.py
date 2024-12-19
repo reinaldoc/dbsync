@@ -15,6 +15,8 @@ class FileDAO(object):
 
 	@staticmethod
 	def writeToBinaryFile(fileName, content):
+		if content is None:
+			return
 		f = open(fileName, "wb")
 		f.write(content)
 		f.close()

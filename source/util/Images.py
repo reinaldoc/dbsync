@@ -29,8 +29,11 @@ class Images():
 	@staticmethod
 	def resize_string_keeping_height_ratio(string, width, output_format=None, resizemode=Image.LANCZOS):
 		by = type(bytes())
+		if string is None:
+			return None
+
 		if type(string) != by:
-			raise Exception('field is not bytes')
+			raise Exception('field is not bytes: %s' % type(string))
 
 		image = Image.open(BytesIO(string))
 		if output_format is None:
